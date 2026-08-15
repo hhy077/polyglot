@@ -15,18 +15,42 @@ window.PG_UTILS = (function () {
     }[c]));
   }
 
+  // ---- speech synthesis (TTS) ----
+  // Chrome loads voices asynchronously; cache them and refresh on voiceschanged
+  let voicesCache = [];
+  function refreshVoices() {
+    if (!('speechSynthesis' in window)) return;
+    const vs = window.speechSynthesis.getVoices();
+    if (vs && vs.length) voicesCache = vs;
+  }
+  if ('speechSynthesis' in window) {
+    refreshVoices();
+    window.speechSynthesis.onvoiceschanged = refreshVoices;
+  }
+
   // Web Speech API TTS (text-to-speech) for listening & speaking models
   function speak(text, langVoice) {
-    if (!('speechSynthesis' in window)) { toast('当前浏览器不支持语音播放', 'err'); return; }
-    window.speechSynthesis.cancel();
+    if (!('speechSynthesis' in window)) { toast('当前浏览器不支持语音播放，请使用 Chrome/Edge', 'err'); return; }
+    const synth = window.speechSynthesis;
+    synth.cancel();
     const u = new SpeechSynthesisUtterance(text);
     u.lang = langVoice || 'en-US';
     u.rate = 0.9;
-    // try to pick a matching voice
-    const voices = window.speechSynthesis.getVoices();
-    const v = voices.find(v => v.lang === langVoice) || voices.find(v => v.lang.indexOf((langVoice || '').slice(0, 2)) === 0);
+    u.pitch = 1;
+    u.volume = 1;
+    // try to pick a matching voice (case-insensitive, prefer exact match)
+    const wanted = (langVoice || 'en-US').toLowerCase();
+    const two = wanted.slice(0, 2);
+    const voices = voicesCache.length ? voicesCache : (synth.getVoices() || []);
+    const v = voices.find(x => (x.lang || '').toLowerCase() === wanted)
+      || voices.find(x => (x.lang || '').toLowerCase().startsWith(two))
+      || voices.find(x => (x.lang || '').toLowerCase().indexOf(two) === 0);
     if (v) u.voice = v;
-    window.speechSynthesis.speak(u);
+    // Chrome/Edge bug: sometimes needs resume() after cancel() to start playing
+    if (synth.paused) synth.resume();
+    synth.speak(u);
+    // ensure voices are loaded for the next call
+    if (!voicesCache.length) setTimeout(refreshVoices, 300);
   }
 
   // Web Speech API recognition for 口语跟读 (best-effort; degrades gracefully)
