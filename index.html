@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>霍华翔 - 个人简历</title>
+  <title data-i18n="fullName">霍华翔 - 个人简历</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -658,15 +658,15 @@
     <div class="intro-particles absolute inset-0 pointer-events-none overflow-hidden" id="intro-particles"></div>
     <div class="intro-burst absolute inset-0 pointer-events-none overflow-hidden" id="intro-burst"></div>
     <div class="relative z-10 text-center px-6 max-w-lg select-none">
-      <div id="intro-avatar" class="intro-avatar mb-8 mx-auto w-28 h-28 rounded-full flex items-center justify-center text-5xl font-bold text-white shadow-2xl relative cursor-pointer select-none" title="连续点击 5 次解锁">
-        霍
+      <div id="intro-avatar" class="intro-avatar mb-8 mx-auto w-28 h-28 rounded-full flex items-center justify-center text-5xl font-bold text-white shadow-2xl relative cursor-pointer select-none" data-i18n-attr="title" data-i18n="avatarTitle" title="连续点击 5 次解锁">
+        <span id="intro-avatar-text">霍</span>
         <span class="intro-avatar-ring absolute inset-0 rounded-full pointer-events-none"></span>
         <span class="intro-avatar-ripple absolute inset-0 rounded-full pointer-events-none"></span>
       </div>
       <h1 class="intro-title text-5xl md:text-7xl font-extrabold tracking-tight mb-4 min-h-[1.2em]">
         <span id="intro-typed"></span><span class="intro-cursor">|</span>
       </h1>
-      <p class="intro-subtitle text-lg md:text-xl mb-6 min-h-[1.6em]" id="intro-subtitle">
+      <p class="intro-subtitle text-lg md:text-xl mb-6 min-h-[1.6em]" id="intro-subtitle" data-i18n="introSubtitle">
         个人简历 · Portfolio
       </p>
 
@@ -675,15 +675,15 @@
         <div class="manual-progress-track">
           <div class="manual-progress-fill" id="manual-progress-fill" style="width: 0%"></div>
         </div>
-        <p class="manual-progress-hint" id="manual-progress-hint">连续点击头像 5 次手动解锁</p>
+        <p class="manual-progress-hint" id="manual-progress-hint" data-i18n="manualHint">连续点击头像 5 次手动解锁</p>
       </div>
 
       <button id="enter-btn" class="intro-btn group relative inline-flex items-center gap-3 px-10 py-5 rounded-full text-lg font-bold mx-auto cursor-pointer">
-        <span>进入简历</span>
+        <span data-i18n="enterBtn">进入简历</span>
         <i data-lucide="arrow-right" class="w-6 h-6 text-white transition-transform duration-300 group-hover:translate-x-1"></i>
         <span class="intro-ring absolute inset-0 rounded-full pointer-events-none"></span>
       </button>
-      <p class="intro-hint mt-8 text-sm">点击按钮或按 Enter 键进入</p>
+      <p class="intro-hint mt-8 text-sm" data-i18n="introHint">点击按钮或按 Enter 键进入</p>
     </div>
   </div>
 
@@ -765,24 +765,24 @@
   <!-- Nav -->
   <nav class="nav fixed top-0 inset-x-0 z-50 glass border-b transition-colors duration-700" id="navbar">
     <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
-      <a href="#hero" class="text-lg font-extrabold tracking-tight transition-colors duration-700 nav-name">霍华翔</a>
+      <a href="#hero" class="text-lg font-extrabold tracking-tight transition-colors duration-700 nav-name" data-i18n="footerCopyright">霍华翔</a>
       <div class="hidden md:flex items-center gap-1 text-sm font-medium nav-links">
-        <a href="#highlights" class="px-3 py-2 rounded-lg transition-colors">亮点</a>
-        <a href="#experience" class="px-3 py-2 rounded-lg transition-colors">经历</a>
-        <a href="#projects" class="px-3 py-2 rounded-lg transition-colors">项目</a>
-        <a href="#skills" class="px-3 py-2 rounded-lg transition-colors">技能</a>
-        <a href="#education" class="px-3 py-2 rounded-lg transition-colors">教育</a>
+        <a href="#highlights" class="px-3 py-2 rounded-lg transition-colors" data-i18n="navHighlights">亮点</a>
+        <a href="#experience" class="px-3 py-2 rounded-lg transition-colors" data-i18n="navExperience">经历</a>
+        <a href="#projects" class="px-3 py-2 rounded-lg transition-colors" data-i18n="navProjects">项目</a>
+        <a href="#skills" class="px-3 py-2 rounded-lg transition-colors" data-i18n="navSkills">技能</a>
+        <a href="#education" class="px-3 py-2 rounded-lg transition-colors" data-i18n="navEducation">教育</a>
       </div>
       <div class="flex items-center gap-2">
-        <button id="lang-btn" class="w-9 h-9 rounded-full glass flex items-center justify-center text-xs font-bold transition-colors" title="切换语言">中</button>
-        <button id="theme-btn" class="w-9 h-9 rounded-full glass flex items-center justify-center transition-colors no-print" title="切换日间/月间" aria-label="切换日间/月间">
+        <button id="lang-btn" class="w-9 h-9 rounded-full glass flex items-center justify-center text-xs font-bold transition-colors" data-i18n-attr="title" data-i18n="langTitle" title="切换语言">中</button>
+        <button id="theme-btn" class="w-9 h-9 rounded-full glass flex items-center justify-center transition-colors no-print" data-i18n-attr="title" data-i18n="themeTitle" title="切换日间/月间">
           <i data-lucide="sun" class="w-4 h-4 theme-day"></i>
           <i data-lucide="moon" class="w-4 h-4 theme-night hidden"></i>
         </button>
-        <button id="print-btn" class="w-9 h-9 rounded-full glass flex items-center justify-center transition-colors no-print" title="打印 / 存 PDF" aria-label="打印">
+        <button id="print-btn" class="w-9 h-9 rounded-full glass flex items-center justify-center transition-colors no-print" data-i18n-attr="title" data-i18n="printTitle" title="打印 / 存 PDF" aria-label="打印">
           <i data-lucide="printer" class="w-4 h-4"></i>
         </button>
-        <button id="menu-btn" class="md:hidden w-9 h-9 rounded-full glass flex items-center justify-center" aria-label="菜单">
+        <button id="menu-btn" class="md:hidden w-9 h-9 rounded-full glass flex items-center justify-center" data-i18n-attr="aria-label" data-i18n="menuLabel" aria-label="菜单">
           <i data-lucide="menu" class="w-4 h-4"></i>
         </button>
       </div>
@@ -790,11 +790,11 @@
     <!-- Mobile menu -->
     <div id="mobile-menu" class="hidden md:hidden glass border-t transition-colors duration-700">
       <div class="max-w-6xl mx-auto px-5 py-3 flex flex-col gap-1 text-sm font-medium">
-        <a href="#highlights" class="px-3 py-2 rounded-lg">亮点</a>
-        <a href="#experience" class="px-3 py-2 rounded-lg">经历</a>
-        <a href="#projects" class="px-3 py-2 rounded-lg">项目</a>
-        <a href="#skills" class="px-3 py-2 rounded-lg">技能</a>
-        <a href="#education" class="px-3 py-2 rounded-lg">教育</a>
+        <a href="#highlights" class="px-3 py-2 rounded-lg" data-i18n="navHighlights">亮点</a>
+        <a href="#experience" class="px-3 py-2 rounded-lg" data-i18n="navExperience">经历</a>
+        <a href="#projects" class="px-3 py-2 rounded-lg" data-i18n="navProjects">项目</a>
+        <a href="#skills" class="px-3 py-2 rounded-lg" data-i18n="navSkills">技能</a>
+        <a href="#education" class="px-3 py-2 rounded-lg" data-i18n="navEducation">教育</a>
       </div>
     </div>
   </nav>
@@ -805,13 +805,13 @@
       <div class="flex flex-col md:flex-row gap-8 items-start">
         <div class="relative shrink-0 hero-avatar">
           <div class="w-24 h-24 md:w-28 md:h-28 rounded-2xl bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-4xl font-extrabold shadow-2xl">
-            霍
+            <span id="hero-avatar-text">霍</span>
           </div>
           <div class="absolute -inset-1 rounded-2xl bg-gradient-to-br from-cyan-400/30 to-indigo-500/30 blur-lg -z-10"></div>
         </div>
         <div class="flex-1 min-w-0">
           <h1 class="hero-title text-4xl md:text-6xl font-extrabold tracking-tight mb-2 text-slate-900 dark:text-white">
-            霍华翔 <span class="text-gradient text-2xl md:text-4xl align-middle ml-1">Huahuoxiang</span>
+            <span data-i18n="footerCopyright">霍华翔</span><span id="hero-pinyin" class="text-gradient text-2xl md:text-4xl align-middle ml-1">Huahuoxiang</span>
           </h1>
           <p class="hero-sub text-lg md:text-xl font-semibold mb-4 text-cyan-600 dark:text-cyan-400" data-i18n="role">AI 应用开发者 · 前端工程师 · 智能体设计师</p>
           <p class="hero-text text-base md:text-lg max-w-3xl leading-relaxed mb-6 text-slate-600 dark:text-slate-400" data-i18n="summary">
@@ -850,7 +850,7 @@
           <i data-lucide="briefcase" class="w-6 h-6 text-cyan-600 dark:text-cyan-400"></i>
           <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white" data-i18n="experience">经历</h2>
         </div>
-        <div id="exp-tabs" class="reveal flex flex-wrap gap-2 mb-6" role="tablist" aria-label="经历分类"></div>
+        <div id="exp-tabs" class="reveal flex flex-wrap gap-2 mb-6" role="tablist" data-i18n-attr="aria-label" data-i18n="experience" aria-label="经历"></div>
         <div id="exp-panels"></div>
       </div>
     </section>
@@ -862,7 +862,7 @@
           <i data-lucide="folder-code" class="w-6 h-6 text-cyan-600 dark:text-cyan-400"></i>
           <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white" data-i18n="projects">项目经历</h2>
         </div>
-        <div id="project-tabs" class="reveal flex flex-wrap gap-2 mb-6" role="tablist" aria-label="项目分类"></div>
+        <div id="project-tabs" class="reveal flex flex-wrap gap-2 mb-6" role="tablist" data-i18n-attr="aria-label" data-i18n="projects" aria-label="项目经历"></div>
         <div id="project-panels"></div>
       </div>
     </section>
@@ -913,12 +913,12 @@
 
   <footer class="relative z-10 border-t py-10 text-center text-sm transition-colors duration-700">
     <div class="max-w-6xl mx-auto px-5">
-      <p class="text-slate-500 dark:text-slate-500">© <span id="year"></span> 霍华翔 · 简历最后更新于 <span id="update"></span></p>
+      <p class="text-slate-500 dark:text-slate-500">© <span id="year"></span> <span data-i18n="footerCopyright">霍华翔</span> · <span data-i18n="footerUpdated">简历最后更新于</span> <span id="update"></span></p>
       <p class="mt-1 opacity-70 text-slate-400 dark:text-slate-500" data-i18n="printTip">打印本页可直接导出 PDF</p>
     </div>
   </footer>
 
-  <button id="back-top" class="fixed right-5 bottom-5 z-50 w-11 h-11 rounded-full glass flex items-center justify-center text-cyan-600 dark:text-cyan-400 opacity-0 pointer-events-none transition-all duration-300 no-print" aria-label="返回顶部"><i data-lucide="arrow-up" class="w-5 h-5"></i></button>
+  <button id="back-top" class="fixed right-5 bottom-5 z-50 w-11 h-11 rounded-full glass flex items-center justify-center text-cyan-600 dark:text-cyan-400 opacity-0 pointer-events-none transition-all duration-300 no-print" data-i18n-attr="aria-label" data-i18n="backTopLabel" aria-label="返回顶部"><i data-lucide="arrow-up" class="w-5 h-5"></i></button>
   <div id="toast" class="fixed left-1/2 bottom-8 -translate-x-1/2 z-50 glass px-5 py-3 rounded-xl font-medium text-sm opacity-0 translate-y-3 transition-all duration-300 pointer-events-none flex items-center gap-2 text-cyan-600 dark:text-cyan-400">
     <i data-lucide="check-circle" class="w-4 h-4"></i><span id="toast-msg"></span>
   </div>
@@ -941,6 +941,27 @@
         copied: "邮箱已复制",
         day: "日间",
         night: "月间",
+        fullName: "霍华翔 - 个人简历",
+        introTitle: "个人简历 · Portfolio",
+        introSubtitle: "点击头像 5 次或下方按钮进入",
+        avatarTitle: "连续点击 5 次解锁",
+        enterBtn: "进入简历",
+        introHint: "点击按钮或按 Enter 键进入",
+        manualHint: "连续点击头像 5 次手动解锁",
+        manualHintRemaining: n => `再点击头像 ${n} 次即可解锁`,
+        manualHintComplete: "已解锁！正在粒子化进入...",
+        navHighlights: "亮点",
+        navExperience: "经历",
+        navProjects: "项目",
+        navSkills: "技能",
+        navEducation: "教育",
+        themeTitle: "切换日间/月间",
+        langTitle: "切换语言",
+        printTitle: "打印 / 存 PDF",
+        menuLabel: "菜单",
+        backTopLabel: "返回顶部",
+        footerCopyright: "霍华翔",
+        footerUpdated: "简历最后更新于",
         contact: { phone: "13297873579", email: ["3526873890", "@", "qq.com"], location: "福建·泉州" }
       },
       en: {
@@ -959,6 +980,27 @@
         copied: "Email copied",
         day: "Day",
         night: "Moon",
+        fullName: "Huahuoxiang - Resume",
+        introTitle: "Portfolio",
+        introSubtitle: "Click avatar 5 times or the button below",
+        avatarTitle: "Click 5 times to unlock",
+        enterBtn: "Enter Portfolio",
+        introHint: "Click button or press Enter",
+        manualHint: "Click avatar 5 times to unlock manually",
+        manualHintRemaining: n => `Click avatar ${n} more time${n === 1 ? '' : 's'} to unlock`,
+        manualHintComplete: "Unlocked! Particle transitioning...",
+        navHighlights: "Highlights",
+        navExperience: "Experience",
+        navProjects: "Projects",
+        navSkills: "Skills",
+        navEducation: "Education",
+        themeTitle: "Toggle Day/Moon mode",
+        langTitle: "Switch language",
+        printTitle: "Print / Save PDF",
+        menuLabel: "Menu",
+        backTopLabel: "Back to top",
+        footerCopyright: "Huahuoxiang",
+        footerUpdated: "Last updated",
         contact: { phone: "13297873579", email: ["3526873890", "@", "qq.com"], location: "Quanzhou, Fujian, China" }
       },
       highlights: [
@@ -970,18 +1012,18 @@
       ],
       skills: [
         { category: "人工智能", categoryEn: "AI", icon: "brain", type: "bar", items: [
-          { name: "Prompt Engineering", level: 92 },
-          { name: "Agent Orchestration", level: 88 },
-          { name: "数据标注 / 模型评估", level: 85 },
-          { name: "RAG / Embedding / 向量检索", level: 82 }
+          { name: "Prompt Engineering", nameEn: "Prompt Engineering", level: 92 },
+          { name: "Agent Orchestration", nameEn: "Agent Orchestration", level: 88 },
+          { name: "数据标注 / 模型评估", nameEn: "Data Annotation / Model Evaluation", level: 85 },
+          { name: "RAG / Embedding / 向量检索", nameEn: "RAG / Embedding / Vector Search", level: 82 }
         ]},
         { category: "前端开发", categoryEn: "Frontend", icon: "layout", type: "bar", items: [
-          { name: "HTML5 / CSS3 / 响应式布局", level: 88 },
-          { name: "JavaScript (ES6+)", level: 85 },
-          { name: "性能优化 / 无障碍 / 跨端适配", level: 82 }
+          { name: "HTML5 / CSS3 / 响应式布局", nameEn: "HTML5 / CSS3 / Responsive Layout", level: 88 },
+          { name: "JavaScript (ES6+)", nameEn: "JavaScript (ES6+)", level: 85 },
+          { name: "性能优化 / 无障碍 / 跨端适配", nameEn: "Performance / A11y / Cross-device", level: 82 }
         ]},
-        { category: "工具与平台", categoryEn: "Tools", icon: "wrench", type: "badge", items: ["Python", "LangChain", "Coze", "Dify", "Chroma", "Git", "Figma", "RESTful API"] },
-        { category: "领域方向", categoryEn: "Domains", icon: "target", type: "badge", items: ["AI 教育", "效率工具", "科研助手", "知识库", "人机交互"] }
+        { category: "工具与平台", categoryEn: "Tools", icon: "wrench", type: "badge", items: ["Python", "LangChain", "Coze", "Dify", "Chroma", "Git", "Figma", "RESTful API"], itemsEn: ["Python", "LangChain", "Coze", "Dify", "Chroma", "Git", "Figma", "RESTful API"] },
+        { category: "领域方向", categoryEn: "Domains", icon: "target", type: "badge", items: ["AI 教育", "效率工具", "科研助手", "知识库", "人机交互"], itemsEn: ["AI Education", "Efficiency Tools", "Research Assistant", "Knowledge Base", "HCI"] }
       ],
       experience: [
         // { id: "campus", label: { zh: "校园经历", en: "Campus" }, icon: "school", items: [] }
@@ -995,58 +1037,87 @@
       projectList: [
         {
           title: "阳光花园·学习乐园",
+          titleEn: "Sunny Garden · Learning Paradise",
           role: "产品负责人 & 全栈开发者",
+          roleEn: "Product Lead & Full-stack Developer",
           date: "2026.07",
           category: "edu",
           icon: "book-open",
           tags: ["HTML5", "CSS3", "JavaScript", "响应式", "AI 语音评测", "Lottie"],
+          tagsEn: ["HTML5", "CSS3", "JavaScript", "Responsive", "AI Speech Evaluation", "Lottie"],
           points: [
             "从 0 到 1 主导设计并实现一款面向 3-8 岁儿童的响应式综合学习平台，覆盖识字、算术、绘画、科普等互动模块",
             "首屏加载时间优化至 1.2s，渲染效率提升 35%，跨浏览器兼容 Chrome / Safari / Edge",
             "集成 AI 语音评测与个性化学习路径推荐，通过大模型 API 实现儿童发音实时纠正"
+          ],
+          pointsEn: [
+            "Led the end-to-end design and development of a responsive learning platform for ages 3-8, covering literacy, arithmetic, drawing, and science modules.",
+            "Optimized first paint to 1.2s, improved rendering efficiency by 35%, and ensured cross-browser compatibility with Chrome / Safari / Edge.",
+            "Integrated AI speech evaluation and personalized learning paths via LLM APIs for real-time pronunciation correction."
           ]
         },
         {
           title: "个人专属工作台",
+          titleEn: "Personal AI Workspace",
           role: "AI 效率工具开发者",
+          roleEn: "AI Efficiency Tool Developer",
           date: "2026.07",
           category: "efficiency",
           icon: "bot",
           tags: ["LLM", "多 Agent 协作", "Prompt 编排", "工具调用", "云部署"],
+          tagsEn: ["LLM", "Multi-Agent Collaboration", "Prompt Orchestration", "Tool Calling", "Cloud Deploy"],
           points: [
             "聚焦个人任务管理、知识检索与日程协同痛点，搭建基于大语言模型的个性化工作台",
             "设计多智能体协作架构，通过 Prompt 编排与工具调用串联日历、待办、文件搜索等模块，任务处理平均耗时下降 50%",
             "部署至轻量云服务器，实现数据端到端加密与持久化存储，上线后无故障运行"
+          ],
+          pointsEn: [
+            "Built a personal LLM-powered workspace addressing task management, knowledge retrieval, and schedule coordination.",
+            "Designed a multi-agent collaboration architecture using prompt orchestration and tool calling to connect calendar, todos, and file search, reducing task handling time by 50%.",
+            "Deployed on a lightweight cloud server with end-to-end encryption and persistent storage, running stably since launch."
           ]
         },
         {
           title: "文献智能辅助阅读工具",
+          titleEn: "Smart Literature Reading Assistant",
           role: "AI 科研工具开发者",
+          roleEn: "AI Research Tool Developer",
           date: "2026.07",
           category: "research",
           icon: "file-search",
           tags: ["PDF 解析", "Embedding", "Chroma", "RAG", "大模型 API"],
+          tagsEn: ["PDF Parsing", "Embedding", "Chroma", "RAG", "LLM API"],
           points: [
             "开发基于大语言模型的智能阅读助手，支持 PDF/网页导入、自动摘要、术语解释、多轮问答",
             "运用 Embedding 技术与向量数据库构建论文知识库，关键信息定位准确率达 88%，文献阅读速度提升 60%",
             "内部小组测试中处理中英文学术论文 50+ 篇，科研人员信息整理时间平均缩短 55%"
+          ],
+          pointsEn: [
+            "Developed an LLM-based reading assistant supporting PDF/web import, auto-summarization, term explanation, and multi-turn Q&A.",
+            "Used embedding and vector database to build a paper knowledge base, reaching 88% key-info accuracy and improving reading speed by 60%.",
+            "Processed 50+ Chinese and English academic papers in internal testing, reducing researchers' information organization time by 55%."
           ]
         }
       ],
       education: {
         school: "泉州师范学院",
+        schoolEn: "Quanzhou Normal University",
         major: "食品科学与工程 · 本科",
+        majorEn: "Food Science & Engineering · Bachelor",
         date: "2026.09 – 2030.06（预计）",
+        dateEn: "Sept 2026 – June 2030 (Expected)",
         courses: "食品化学、食品微生物学、食品工程原理 等",
+        coursesEn: "Food Chemistry, Food Microbiology, Food Engineering Principles, etc.",
         gpa: null,
-        note: "跨学科探索人工智能与食品科学的融合，自主修读大语言模型、智能体开发、人机交互设计等前沿技术课程"
+        note: "跨学科探索人工智能与食品科学的融合，自主修读大语言模型、智能体开发、人机交互设计等前沿技术课程",
+        noteEn: "Exploring the integration of AI and food science, self-studying LLMs, agent development, and HCI design."
       },
       certificates: [
-        { name: "人工智能训练师（初级）职业证书", date: "2026 年" },
-        { name: "人工智能训练师（高级）职业证书", date: "2026 年" },
-        { name: "Datawhale & 科大讯飞 Prompt Engineer 认证", date: "2026 年" },
-        { name: "Datawhale & 魔搭社区 Agent Engineer 认证", date: "2026 年" },
-        { name: "Datawhale & 文付宝百宝箱 Agent Engineer 能力认证", date: "2026 年" }
+        { name: "人工智能训练师（初级）职业证书", nameEn: "AI Trainer (Junior) Certificate", date: "2026 年", dateEn: "2026" },
+        { name: "人工智能训练师（高级）职业证书", nameEn: "AI Trainer (Senior) Certificate", date: "2026 年", dateEn: "2026" },
+        { name: "Datawhale & 科大讯飞 Prompt Engineer 认证", nameEn: "Datawhale & iFlytek Prompt Engineer Certification", date: "2026 年", dateEn: "2026" },
+        { name: "Datawhale & 魔搭社区 Agent Engineer 认证", nameEn: "Datawhale & ModelScope Agent Engineer Certification", date: "2026 年", dateEn: "2026" },
+        { name: "Datawhale & 文付宝百宝箱 Agent Engineer 能力认证", nameEn: "Datawhale & Wenfubao Agent Engineer Certification", date: "2026 年", dateEn: "2026" }
       ]
     };
 
@@ -1057,7 +1128,10 @@
 
     function setText(el, key) {
       const t = resume[lang][key];
-      if (t !== undefined) el.textContent = t;
+      if (t === undefined) return;
+      const attr = el.getAttribute('data-i18n-attr');
+      if (attr) el.setAttribute(attr, t);
+      else el.textContent = t;
     }
 
     function applyThemeStyles() {
@@ -1081,6 +1155,10 @@
 
     function renderHero() {
       document.querySelectorAll('[data-i18n]').forEach(el => setText(el, el.dataset.i18n));
+      const pinyin = $('hero-pinyin');
+      if (pinyin) pinyin.classList.toggle('hidden', lang === 'en');
+      const heroAvatarText = $('hero-avatar-text');
+      if (heroAvatarText) heroAvatarText.textContent = lang === 'zh' ? '霍' : 'H';
       const c = resume[lang].contact;
       const email = c.email.join('');
       $('tel-btn').href = 'tel:' + c.phone;
@@ -1225,7 +1303,12 @@
         tabData: projectData, panelData: projectData.map(g => g.list),
         containerPrefix: 'project',
         renderPanel(items, panel) {
-          panel.innerHTML = `<div class="grid grid-cols-1 lg:grid-cols-2 gap-5">${items.map((p, i) => `
+          panel.innerHTML = `<div class="grid grid-cols-1 lg:grid-cols-2 gap-5">${items.map((p, i) => {
+            const title = lang === 'en' && p.titleEn ? p.titleEn : p.title;
+            const role = lang === 'en' && p.roleEn ? p.roleEn : p.role;
+            const points = lang === 'en' && p.pointsEn ? p.pointsEn : p.points;
+            const tags = lang === 'en' && p.tagsEn ? p.tagsEn : p.tags;
+            return `
             <article class="reveal stagger-${Math.min(i+1, 5)} glass rounded-2xl p-5 md:p-6 card-hover flex flex-col h-full">
               <div class="flex items-start justify-between gap-3 mb-3">
                 <div class="flex items-center gap-3">
@@ -1233,14 +1316,14 @@
                     <i data-lucide="${p.icon}" class="w-5 h-5"></i>
                   </div>
                   <div>
-                    <h3 class="text-base font-bold text-slate-900 dark:text-white">${escape(p.title)}</h3>
-                    <p class="text-xs text-cyan-600 dark:text-cyan-400 font-semibold">${escape(p.role)}</p>
+                    <h3 class="text-base font-bold text-slate-900 dark:text-white">${escape(title)}</h3>
+                    <p class="text-xs text-cyan-600 dark:text-cyan-400 font-semibold">${escape(role)}</p>
                   </div>
                 </div>
                 <span class="text-xs font-medium whitespace-nowrap ${isDark ? 'text-slate-500' : 'text-slate-400'}">${escape(p.date)}</span>
               </div>
               <ul class="space-y-2 flex-1 mb-4">
-                ${p.points.map(pt => `
+                ${points.map(pt => `
                   <li class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed flex gap-2">
                     <span class="text-cyan-500 mt-1.5 w-1.5 h-1.5 rounded-full bg-cyan-500 shrink-0"></span>
                     <span>${escape(pt)}</span>
@@ -1248,44 +1331,54 @@
                 `).join('')}
               </ul>
               <div class="flex flex-wrap gap-2 mt-auto">
-                ${p.tags.map(t => `<span class="px-2.5 py-1 rounded-full text-xs font-medium bg-cyan-500/10 border border-cyan-500/20 text-cyan-700 dark:text-cyan-300">${escape(t)}</span>`).join('')}
+                ${tags.map(t => `<span class="px-2.5 py-1 rounded-full text-xs font-medium bg-cyan-500/10 border border-cyan-500/20 text-cyan-700 dark:text-cyan-300">${escape(t)}</span>`).join('')}
               </div>
             </article>
-          `).join('')}</div>`;
+          `}).join('')}</div>`;
         }
       });
     }
 
     function renderSkills() {
-      $('skill-grid').innerHTML = resume.skills.map((g, gi) => `
+      $('skill-grid').innerHTML = resume.skills.map((g, gi) => {
+        const category = lang === 'en' && g.categoryEn ? g.categoryEn : g.category;
+        const items = lang === 'en' && g.itemsEn ? g.itemsEn : g.items;
+        return `
         <div class="reveal glass rounded-2xl p-5 md:p-6 card-hover">
           <div class="flex items-center gap-2 mb-5">
             <div class="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-600 dark:text-cyan-400">
               <i data-lucide="${g.icon}" class="w-4 h-4"></i>
             </div>
-            <h3 class="text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">${escape(lang === 'en' && g.categoryEn ? g.categoryEn : g.category)}</h3>
+            <h3 class="text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">${escape(category)}</h3>
           </div>
-          ${g.type === 'bar' ? `<div class="space-y-4">${g.items.map((i, idx) => `
+          ${g.type === 'bar' ? `<div class="space-y-4">${g.items.map((i, idx) => {
+            const name = lang === 'en' && i.nameEn ? i.nameEn : i.name;
+            return `
             <div class="reveal-left stagger-${Math.min(idx+1, 5)}">
               <div class="flex justify-between text-sm mb-1.5">
-                <span class="text-slate-700 dark:text-slate-300 font-medium">${escape(i.name)}</span>
+                <span class="text-slate-700 dark:text-slate-300 font-medium">${escape(name)}</span>
                 <span class="text-cyan-600 dark:text-cyan-400 font-semibold skill-num" data-target="${i.level}">0%</span>
               </div>
               <div class="h-2 bg-slate-200 dark:bg-white/5 rounded-full overflow-hidden border border-slate-200 dark:border-white/5">
                 <div class="progress-fill h-full rounded-full skill-bar" style="width:0%" data-w="${i.level}"></div>
               </div>
             </div>
-          `).join('')}</div>` : `<div class="flex flex-wrap gap-2">${g.items.map(i => `<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-cyan-500/10 border border-cyan-500/20 text-cyan-700 dark:text-cyan-300"><i data-lucide="check" class="w-3 h-3"></i>${escape(i)}</span>`).join('')}</div>`}
+          `}).join('')}</div>` : `<div class="flex flex-wrap gap-2">${items.map(i => `<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-cyan-500/10 border border-cyan-500/20 text-cyan-700 dark:text-cyan-300"><i data-lucide="check" class="w-3 h-3"></i>${escape(i)}</span>`).join('')}</div>`}
         </div>
-      `).join('');
+      `}).join('');
     }
 
     function renderEducation() {
       const e = resume.education;
+      const school = lang === 'en' && e.schoolEn ? e.schoolEn : e.school;
+      const major = lang === 'en' && e.majorEn ? e.majorEn : e.major;
+      const date = lang === 'en' && e.dateEn ? e.dateEn : e.date;
+      const courses = lang === 'en' && e.coursesEn ? e.coursesEn : e.courses;
+      const note = lang === 'en' && e.noteEn ? e.noteEn : e.note;
       let details = [];
-      if (e.courses) details.push(`<span class="inline-flex items-center gap-1"><i data-lucide="book-marked" class="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400"></i>${escape(e.courses)}</span>`);
+      if (courses) details.push(`<span class="inline-flex items-center gap-1"><i data-lucide="book-marked" class="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400"></i>${escape(courses)}</span>`);
       if (e.gpa) details.push(`GPA: ${escape(e.gpa)}`);
-      if (e.note) details.push(`<span class="inline-flex items-center gap-1"><i data-lucide="lightbulb" class="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400"></i>${escape(e.note)}</span>`);
+      if (note) details.push(`<span class="inline-flex items-center gap-1"><i data-lucide="lightbulb" class="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400"></i>${escape(note)}</span>`);
       $('edu-card').innerHTML = `
         <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3 mb-3">
           <div class="flex items-center gap-3">
@@ -1293,42 +1386,49 @@
               <i data-lucide="graduation-cap" class="w-6 h-6"></i>
             </div>
             <div>
-              <h3 class="text-xl font-extrabold text-slate-900 dark:text-white">${escape(e.school)}</h3>
-              <p class="text-sm text-cyan-600 dark:text-cyan-400 font-semibold">${escape(e.major)}</p>
+              <h3 class="text-xl font-extrabold text-slate-900 dark:text-white">${escape(school)}</h3>
+              <p class="text-sm text-cyan-600 dark:text-cyan-400 font-semibold">${escape(major)}</p>
             </div>
           </div>
           <span class="inline-flex items-center gap-1 text-xs font-medium px-3 py-1.5 rounded-lg whitespace-nowrap self-start ${isDark ? 'text-slate-500 bg-white/5' : 'text-slate-500 bg-slate-100'}">
-            <i data-lucide="calendar" class="w-3.5 h-3.5"></i>${escape(e.date)}
+            <i data-lucide="calendar" class="w-3.5 h-3.5"></i>${escape(date)}
           </span>
         </div>
         ${details.length ? `<div class="space-y-2 text-sm text-slate-600 dark:text-slate-400 mt-4">${details.map(d => `<div>${d}</div>`).join('')}</div>` : ''}
       `;
-      $('cert-list').innerHTML = resume.certificates.slice(0, 4).map((c, i) => `
-        <div class="cert-card reveal-scale stagger-${Math.min(i+1, 5)} glass rounded-2xl p-4 flex items-center gap-4" title="点击查看全部证书">
+      const certTitle = resume[lang].allCerts || '查看全部证书';
+      $('cert-list').innerHTML = resume.certificates.slice(0, 4).map((c, i) => {
+        const name = lang === 'en' && c.nameEn ? c.nameEn : c.name;
+        const dateStr = lang === 'en' && c.dateEn ? c.dateEn : c.date;
+        return `
+        <div class="cert-card reveal-scale stagger-${Math.min(i+1, 5)} glass rounded-2xl p-4 flex items-center gap-4" title="${escape(certTitle)}">
           <div class="w-11 h-11 rounded-full bg-gradient-to-br from-cyan-500/20 to-indigo-500/20 border border-cyan-500/20 flex items-center justify-center text-cyan-600 dark:text-cyan-400 shrink-0">
             <i data-lucide="award" class="w-5 h-5"></i>
           </div>
           <div class="min-w-0 flex-1">
-            <div class="text-sm font-bold text-slate-800 dark:text-slate-200 truncate">${escape(c.name)}</div>
-            <div class="text-xs text-slate-400 dark:text-slate-500">${escape(c.date)}</div>
+            <div class="text-sm font-bold text-slate-800 dark:text-slate-200 truncate">${escape(name)}</div>
+            <div class="text-xs text-slate-400 dark:text-slate-500">${escape(dateStr)}</div>
           </div>
           <div class="cert-view-hint text-cyan-600 dark:text-cyan-400">
             <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </div>
         </div>
-      `).join('');
+      `}).join('');
 
-      $('certs-modal-list').innerHTML = resume.certificates.map((c, i) => `
+      $('certs-modal-list').innerHTML = resume.certificates.map((c, i) => {
+        const name = lang === 'en' && c.nameEn ? c.nameEn : c.name;
+        const dateStr = lang === 'en' && c.dateEn ? c.dateEn : c.date;
+        return `
         <div class="certs-modal-cert" style="animation: introFadeIn 0.4s ease-out ${i * 0.05}s both;">
           <div class="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500/20 to-indigo-500/20 border border-cyan-500/20 flex items-center justify-center text-cyan-600 dark:text-cyan-400 shrink-0">
             <i data-lucide="award" class="w-6 h-6"></i>
           </div>
           <div class="min-w-0 flex-1">
-            <div class="text-base font-bold text-slate-800 dark:text-slate-200">${escape(c.name)}</div>
-            <div class="text-sm text-slate-400 dark:text-slate-500">${escape(c.date)}</div>
+            <div class="text-base font-bold text-slate-800 dark:text-slate-200">${escape(name)}</div>
+            <div class="text-sm text-slate-400 dark:text-slate-500">${escape(dateStr)}</div>
           </div>
         </div>
-      `).join('');
+      `}).join('');
     }
 
     function copy(text) {
@@ -1346,7 +1446,9 @@
     function applyLang() {
       document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
       $('lang-btn').textContent = lang === 'zh' ? '中' : 'En';
-      renderHero(); renderExperience(); renderProjects(); renderSkills(); renderEducation();
+      if ($('theme-btn')) $('theme-btn').setAttribute('aria-label', resume[lang].themeTitle);
+      if ($('update')) $('update').textContent = new Date().toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US');
+      renderHero(); renderHighlights(); renderExperience(); renderProjects(); renderSkills(); renderEducation();
       lucide.createIcons();
       refreshReveal();
     }
@@ -1551,6 +1653,7 @@
       const introScreen = $('intro-screen');
       const enterBtn = $('enter-btn');
       const avatar = $('intro-avatar');
+      const avatarText = $('intro-avatar-text');
       const progressFill = $('manual-progress-fill');
       const progressHint = $('manual-progress-hint');
       const particles = $('intro-particles');
@@ -1558,6 +1661,8 @@
       const typed = $('intro-typed');
       const subtitle = $('intro-subtitle');
       if (!introScreen) return;
+
+      if (avatarText) avatarText.textContent = lang === 'zh' ? '霍' : 'H';
 
       // Floating ambient particles
       if (particles) {
@@ -1577,7 +1682,7 @@
       }
 
       // Typing effect for name
-      const name = '霍华翔';
+      const name = lang === 'zh' ? '霍华翔' : 'Huahuoxiang';
       let nameIdx = 0;
       function typeName() {
         if (typed && nameIdx <= name.length) {
@@ -1591,12 +1696,18 @@
       setTimeout(typeName, 500);
 
       // Cycling fun subtitles
-      const subtitles = [
+      const subtitles = lang === 'zh' ? [
         '个人简历 · Portfolio',
         '一名热爱技术的开发者 ✨',
         '正在加载精彩经历...',
         '连续点击头像 5 次，手动解锁 →',
         '或点击下方按钮快速进入'
+      ] : [
+        'Portfolio',
+        'A developer who loves tech ✨',
+        'Loading amazing experiences...',
+        'Click avatar 5 times to unlock →',
+        'Or press the button below'
       ];
       let subIdx = 0;
       const subInterval = setInterval(() => {
@@ -1620,10 +1731,12 @@
         if (progressFill) progressFill.style.width = pct + '%';
         if (progressHint) {
           if (manualClicks >= MANUAL_CLICKS) {
-            progressHint.textContent = '已解锁！正在粒子化进入...';
+            progressHint.textContent = resume[lang].manualHintComplete;
             progressHint.classList.add('complete');
           } else {
-            progressHint.textContent = `再点击头像 ${MANUAL_CLICKS - manualClicks} 次即可解锁`;
+            const remaining = MANUAL_CLICKS - manualClicks;
+            const tmpl = resume[lang].manualHintRemaining;
+            progressHint.textContent = typeof tmpl === 'function' ? tmpl(remaining) : tmpl.replace('{n}', remaining);
           }
         }
       }
