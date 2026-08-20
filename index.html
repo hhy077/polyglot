@@ -188,7 +188,7 @@
       transition: opacity 1s ease, transform 8s ease-in-out;
     }
 
-    /* Shooting stars - SVG paint-stroke style */
+    /* Shooting stars - realistic comet style */
     .meteor {
       position: fixed;
       inset: 0;
@@ -226,19 +226,47 @@
       to { stroke-dashoffset: 0; }
     }
 
+    .meteor-core {
+      stroke-dasharray: var(--len);
+      stroke-dashoffset: var(--len);
+      opacity: 0.8;
+    }
+    .meteor.active .meteor-core {
+      animation: drawTail 2.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    .meteor.small.active .meteor-core {
+      animation-duration: 1.9s;
+    }
+
     .meteor-head {
+      opacity: 0;
+    }
+    .meteor-head-star {
       opacity: 0;
     }
     .meteor.active .meteor-head {
       animation: headShow 2.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     }
+    .meteor.active .meteor-head-star {
+      animation: headShow 2.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards, headSparkle 1.2s ease-in-out infinite;
+    }
     .meteor.small.active .meteor-head {
       animation-duration: 1.9s;
     }
+    .meteor.small.active .meteor-head-star {
+      animation-duration: 1.9s, 1.2s;
+    }
     @keyframes headShow {
-      0% { opacity: 0; }
-      5% { opacity: 1; }
-      100% { opacity: 1; }
+      0% { opacity: 0; transform: scale(0.6); }
+      8% { opacity: 1; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes headSparkle {
+      0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+      50% { transform: scale(1.15) rotate(12deg); opacity: 0.9; }
+    }
+    .meteor-head-star {
+      transform-origin: center;
     }
 
     html:not(.dark) .meteor {
@@ -694,72 +722,126 @@
   <!-- Star field (night only) -->
   <div id="starfield"></div>
 
-  <!-- Shooting stars (night only) - SVG paint-stroke meteors -->
+  <!-- Shooting stars (night only) - realistic star meteors -->
   <svg class="meteor main" id="meteor-main" viewBox="0 0 100 100" preserveAspectRatio="none">
     <defs>
       <linearGradient id="grad-meteor-main" x1="100%" y1="0%" x2="0%" y2="100%">
         <stop offset="0%" stop-color="transparent" />
-        <stop offset="25%" stop-color="rgba(34, 211, 238, 0.2)" />
-        <stop offset="55%" stop-color="rgba(34, 211, 238, 0.6)" />
-        <stop offset="90%" stop-color="rgba(165, 243, 252, 0.95)" />
+        <stop offset="30%" stop-color="rgba(34, 211, 238, 0.15)" />
+        <stop offset="60%" stop-color="rgba(34, 211, 238, 0.55)" />
+        <stop offset="92%" stop-color="rgba(165, 243, 252, 0.95)" />
         <stop offset="100%" stop-color="#fff" />
       </linearGradient>
-      <filter id="glow-meteor-main" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="1.2" result="blur" />
+      <linearGradient id="grad-meteor-main-core" x1="100%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="transparent" />
+        <stop offset="50%" stop-color="rgba(255,255,255,0.25)" />
+        <stop offset="100%" stop-color="#fff" />
+      </linearGradient>
+      <radialGradient id="grad-meteor-head" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#fff" />
+        <stop offset="35%" stop-color="#cffafe" />
+        <stop offset="70%" stop-color="rgba(34, 211, 238, 0.45)" />
+        <stop offset="100%" stop-color="rgba(34, 211, 238, 0)" />
+      </radialGradient>
+      <filter id="glow-meteor-main" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur stdDeviation="2.2" result="blur" />
+        <feMerge>
+          <feMergeNode in="blur" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+      <filter id="glow-meteor-head" x="-150%" y="-150%" width="400%" height="400%">
+        <feGaussianBlur stdDeviation="1.6" result="blur" />
         <feMerge>
           <feMergeNode in="blur" />
           <feMergeNode in="SourceGraphic" />
         </feMerge>
       </filter>
     </defs>
-    <line class="meteor-tail" x1="120" y1="-12" x2="-28" y2="72" stroke="url(#grad-meteor-main)" stroke-width="0.55" stroke-linecap="round" vector-effect="non-scaling-stroke" filter="url(#glow-meteor-main)" />
-    <circle class="meteor-head" r="0.8" fill="#fff" filter="url(#glow-meteor-main)">
-      <animateMotion dur="2.6s" begin="indefinite" fill="freeze" path="M120,-12 L-28,72" />
-    </circle>
+    <line class="meteor-tail" x1="120" y1="-12" x2="-28" y2="72" stroke="url(#grad-meteor-main)" stroke-width="0.85" stroke-linecap="round" vector-effect="non-scaling-stroke" filter="url(#glow-meteor-main)" />
+    <line class="meteor-core" x1="120" y1="-12" x2="-28" y2="72" stroke="url(#grad-meteor-main-core)" stroke-width="0.28" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+    <g class="meteor-head-group" filter="url(#glow-meteor-head)">
+      <circle class="meteor-head" r="2.6" fill="url(#grad-meteor-head)">
+        <animateMotion dur="2.6s" begin="indefinite" fill="freeze" path="M120,-12 L-28,72" />
+      </circle>
+      <path class="meteor-head-star" d="M0,-3.2 L0.8,-0.8 L3.2,0 L0.8,0.8 L0,3.2 L-0.8,0.8 L-3.2,0 L-0.8,-0.8 Z" fill="#fff">
+        <animateMotion dur="2.6s" begin="indefinite" fill="freeze" path="M120,-12 L-28,72" />
+      </path>
+    </g>
   </svg>
 
   <svg class="meteor small" id="meteor-small-1" viewBox="0 0 100 100" preserveAspectRatio="none">
     <defs>
       <linearGradient id="grad-meteor-s1" x1="100%" y1="0%" x2="0%" y2="100%">
         <stop offset="0%" stop-color="transparent" />
-        <stop offset="35%" stop-color="rgba(34, 211, 238, 0.12)" />
-        <stop offset="85%" stop-color="rgba(165, 243, 252, 0.65)" />
+        <stop offset="40%" stop-color="rgba(34, 211, 238, 0.1)" />
+        <stop offset="80%" stop-color="rgba(165, 243, 252, 0.6)" />
         <stop offset="100%" stop-color="rgba(255,255,255,0.9)" />
       </linearGradient>
-      <filter id="glow-meteor-s1" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="0.8" result="blur" />
+      <linearGradient id="grad-meteor-s1-core" x1="100%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="transparent" />
+        <stop offset="100%" stop-color="rgba(255,255,255,0.7)" />
+      </linearGradient>
+      <radialGradient id="grad-meteor-head-s1" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#fff" />
+        <stop offset="45%" stop-color="rgba(207, 250, 254, 0.7)" />
+        <stop offset="100%" stop-color="rgba(34, 211, 238, 0)" />
+      </radialGradient>
+      <filter id="glow-meteor-s1" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur stdDeviation="1.4" result="blur" />
         <feMerge>
           <feMergeNode in="blur" />
           <feMergeNode in="SourceGraphic" />
         </feMerge>
       </filter>
     </defs>
-    <line class="meteor-tail" x1="110" y1="18" x2="-18" y2="58" stroke="url(#grad-meteor-s1)" stroke-width="0.35" stroke-linecap="round" vector-effect="non-scaling-stroke" filter="url(#glow-meteor-s1)" />
-    <circle class="meteor-head" r="0.5" fill="#fff" filter="url(#glow-meteor-s1)">
-      <animateMotion dur="1.9s" begin="indefinite" fill="freeze" path="M110,18 L-18,58" />
-    </circle>
+    <line class="meteor-tail" x1="110" y1="18" x2="-18" y2="58" stroke="url(#grad-meteor-s1)" stroke-width="0.55" stroke-linecap="round" vector-effect="non-scaling-stroke" filter="url(#glow-meteor-s1)" />
+    <line class="meteor-core" x1="110" y1="18" x2="-18" y2="58" stroke="url(#grad-meteor-s1-core)" stroke-width="0.18" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+    <g class="meteor-head-group" filter="url(#glow-meteor-s1)">
+      <circle class="meteor-head" r="1.7" fill="url(#grad-meteor-head-s1)">
+        <animateMotion dur="1.9s" begin="indefinite" fill="freeze" path="M110,18 L-18,58" />
+      </circle>
+      <path class="meteor-head-star" d="M0,-2.1 L0.5,-0.55 L2.1,0 L0.5,0.55 L0,2.1 L-0.5,0.55 L-2.1,0 L-0.5,-0.55 Z" fill="#fff">
+        <animateMotion dur="1.9s" begin="indefinite" fill="freeze" path="M110,18 L-18,58" />
+      </path>
+    </g>
   </svg>
 
   <svg class="meteor small" id="meteor-small-2" viewBox="0 0 100 100" preserveAspectRatio="none">
     <defs>
       <linearGradient id="grad-meteor-s2" x1="100%" y1="0%" x2="0%" y2="100%">
         <stop offset="0%" stop-color="transparent" />
-        <stop offset="35%" stop-color="rgba(34, 211, 238, 0.12)" />
-        <stop offset="85%" stop-color="rgba(165, 243, 252, 0.65)" />
+        <stop offset="40%" stop-color="rgba(34, 211, 238, 0.1)" />
+        <stop offset="80%" stop-color="rgba(165, 243, 252, 0.6)" />
         <stop offset="100%" stop-color="rgba(255,255,255,0.9)" />
       </linearGradient>
-      <filter id="glow-meteor-s2" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="0.8" result="blur" />
+      <linearGradient id="grad-meteor-s2-core" x1="100%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="transparent" />
+        <stop offset="100%" stop-color="rgba(255,255,255,0.7)" />
+      </linearGradient>
+      <radialGradient id="grad-meteor-head-s2" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#fff" />
+        <stop offset="45%" stop-color="rgba(207, 250, 254, 0.7)" />
+        <stop offset="100%" stop-color="rgba(34, 211, 238, 0)" />
+      </radialGradient>
+      <filter id="glow-meteor-s2" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur stdDeviation="1.4" result="blur" />
         <feMerge>
           <feMergeNode in="blur" />
           <feMergeNode in="SourceGraphic" />
         </feMerge>
       </filter>
     </defs>
-    <line class="meteor-tail" x1="108" y1="34" x2="-14" y2="72" stroke="url(#grad-meteor-s2)" stroke-width="0.35" stroke-linecap="round" vector-effect="non-scaling-stroke" filter="url(#glow-meteor-s2)" />
-    <circle class="meteor-head" r="0.5" fill="#fff" filter="url(#glow-meteor-s2)">
-      <animateMotion dur="1.9s" begin="indefinite" fill="freeze" path="M108,34 L-14,72" />
-    </circle>
+    <line class="meteor-tail" x1="108" y1="34" x2="-14" y2="72" stroke="url(#grad-meteor-s2)" stroke-width="0.55" stroke-linecap="round" vector-effect="non-scaling-stroke" filter="url(#glow-meteor-s2)" />
+    <line class="meteor-core" x1="108" y1="34" x2="-14" y2="72" stroke="url(#grad-meteor-s2-core)" stroke-width="0.18" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+    <g class="meteor-head-group" filter="url(#glow-meteor-s2)">
+      <circle class="meteor-head" r="1.7" fill="url(#grad-meteor-head-s2)">
+        <animateMotion dur="1.9s" begin="indefinite" fill="freeze" path="M108,34 L-14,72" />
+      </circle>
+      <path class="meteor-head-star" d="M0,-2.1 L0.5,-0.55 L2.1,0 L0.5,0.55 L0,2.1 L-0.5,0.55 L-2.1,0 L-0.5,-0.55 Z" fill="#fff">
+        <animateMotion dur="1.9s" begin="indefinite" fill="freeze" path="M108,34 L-14,72" />
+      </path>
+    </g>
   </svg>
 
   <!-- Nav -->
