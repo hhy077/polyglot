@@ -1146,6 +1146,7 @@
         panelEls.forEach((el, i) => el.classList.toggle('hidden', i !== idx));
         renderPanel(panelData[idx] || [], panelEls[idx]);
         lucide.createIcons();
+        refreshReveal();
       }
 
       tabEls.forEach((el, i) => {
