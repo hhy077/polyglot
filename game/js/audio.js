@@ -163,16 +163,16 @@ window.SFX = (function () {
   let meme = { timer: null, name: null, pausedName: null };
 
   // ================= 网络玩梗歌曲（真实人声原曲） =================
-  // 网易云音乐外链（302 重定向至 CDN，无 Referer 防盗链，浏览器 <audio> 可直接播放，已验证）
-  // 播放失败自动尝试备选链接，全部失败回退到上方合成 BGM，保证 Boss 战始终有音乐
+  // 原曲下载至游戏目录随站部署（同源HTTPS，规避网易云外链HTTP重定向被浏览器混合内容策略拦截）
+  // 本地缺失时回退网易云外链，再失败回退合成 BGM，保证 Boss 战始终有音乐
   const NET_SONGS = {
     jitn: [
-      'https://music.163.com/song/media/outer/url?id=1948109333.mp3',  // 鸡你太美（完整版）
-      'https://music.163.com/song/media/outer/url?id=1919482168.mp3'   // 备选：DJ 演绎版
+      'assets/music/jitn.mp3',                                     // 鸡你太美（完整版·本地）
+      'https://music.163.com/song/media/outer/url?id=1948109333.mp3'   // 备选：网易云外链
     ],
     dbd: [
-      'https://music.163.com/song/media/outer/url?id=3316869901.mp3',  // 大东北我的家乡（东北最强音版）
-      'https://music.163.com/song/media/outer/url?id=3324390734.mp3'   // 备选：雨姐「带派」版
+      'assets/music/dbd.mp3',                                      // 大东北我的家乡（东北最强音版·本地）
+      'https://music.163.com/song/media/outer/url?id=3316869901.mp3'   // 备选：网易云外链
     ]
   };
   let netAudio = null;                                  // HTML5 Audio 实例
