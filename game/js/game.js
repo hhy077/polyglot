@@ -38,7 +38,11 @@ window.Game = (function () {
   // DOM 引用
   const $ = id => document.getElementById(id);
   const hud = { lpFill: $('lp-fill'), lpLabel: $('lp-label'), bossWrap: $('boss-bar-wrap'), bossFill: $('boss-fill'), bossName: $('boss-name'),
-    lives: $('lives'), shield: $('shield'), score: $('score'), combo: $('combo'), energy: $('energy-fill'), bombs: $('bomb-count'), hudEl: $('hud') };
+    lives: $('lives'), shield: $('shield'), score: $('score'), combo: $('combo'), energy: $('energy-fill'), bombs: $('bomb-count'), hudEl: $('hud'),
+    nowPlaying: $('now-playing') };
+
+  // 玩梗BGM显示名
+  const MEME_LABEL = { jitn: '鸡你太美', dbd: '大东北我的家乡' };
 
   // ---- 升级商店（持久化） ----
   window.Upgrade = (function () {
@@ -517,6 +521,16 @@ window.Game = (function () {
       hud.bossFill.style.width = (hp / max * 100) + '%';
     } else {
       hud.bossWrap.classList.add('hidden');
+    }
+
+    // 玩梗BGM正在播放指示
+    const memeName = SFX.currentMeme();
+    if (memeName) {
+      hud.nowPlaying.classList.remove('hidden');
+      const txt = '♪ 正在播放：《' + MEME_LABEL[memeName] + '》';
+      if (hud.nowPlaying.textContent !== txt) hud.nowPlaying.textContent = txt;
+    } else {
+      hud.nowPlaying.classList.add('hidden');
     }
 
     // 生命 / 护盾

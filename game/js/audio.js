@@ -12,7 +12,7 @@ window.SFX = (function () {
       musicGain.gain.value = 0.06;
       musicGain.connect(master);
       memeGain = ctx.createGain();
-      memeGain.gain.value = 0.22;
+      memeGain.gain.value = 0.6;      // 玩梗BGM显著高于常规BGM，保证存在感
       memeGain.connect(master);
     }
     if (ctx.state === 'suspended') ctx.resume();
@@ -73,7 +73,7 @@ window.SFX = (function () {
   // 射击音效节流：技能开启时发射频率极高，避免大量创建音效节点导致卡死
   let lastShoot = 0;
   const fx = {
-    shoot()    { const now = ctx ? ctx.currentTime : 0; if (now - lastShoot < 0.1) return; lastShoot = now; tone(880, 0.06, 'square', 0.12, 200); },
+    shoot()    { const now = ctx ? ctx.currentTime : 0; if (now - lastShoot < 0.1) return; lastShoot = now; tone(880, 0.06, 'square', 0.08, 200); },
     hit()      { tone(220, 0.05, 'sawtooth', 0.12, 120); },
     explode()  { noise(0.35, 0.5); tone(120, 0.3, 'sawtooth', 0.25, 40); },
     bigExplode(){ noise(0.7, 0.7); tone(90, 0.6, 'sawtooth', 0.35, 30); tone(60,0.8,'square',0.2,25,0.05); },
@@ -166,23 +166,39 @@ window.SFX = (function () {
     if (!ctx || muted) return;
     const spb = 60 / song.bpm;               // 秒/拍
     const t0 = ctx.currentTime + 0.06;
-    // 主旋律
+    // 主旋律（双振荡器轻微失谐加厚，更响更饱满）
     for (const [n, b, d] of song.lead) {
-      toneAt(nf(n), t0 + b * spb, d * spb * 0.92, song.folk ? 'sawtooth' : 'square', 0.16, null, memeGain);
+      const f = nf(n);
+      toneAt(f, t0 + b * spb, d * spb * 0.92, song.folk ? 'sawtooth' : 'square', 0.30, null, memeGain);
+      toneAt(f * 1.005, t0 + b * spb, d * spb * 0.92, song.folk ? 'square' : 'sawtooth', 0.12, null, memeGain);
     }
-    // 低音
+    // 低音（加八度上复制，节奏感更强）
     for (const [n, b, d] of song.bass) {
-      toneAt(nf(n), t0 + b * spb, d * spb * 0.9, 'triangle', 0.3, null, memeGain);
+      const f = nf(n);
+      toneAt(f, t0 + b * spb, d * spb * 0.9, 'triangle', 0.5, null, memeGain);
+      toneAt(f * 2, t0 + b * spb, d * spb * 0.85, 'sawtooth', 0.10, null, memeGain);
     }
-    // 节拍：底鼓(1/3拍) + 哔拍(2/4拍) + 八分踩镲
+    // 节拍：底鼓(1/3拍) + 军鼓(2/4拍) + 八分踩镲
     for (let b = 0; b < song.beats; b++) {
-      if (b % 2 === 0) toneAt(140, t0 + b * spb, 0.12, 'sine', 0.5, 45, memeGain);            // kick
-      else toneAt(900, t0 + b * spb, 0.06, 'square', 0.06, 500, memeGain);                     // snare-ish
-      if (song.hat) toneAt(6000, t0 + (b + 0.5) * spb, 0.03, 'square', 0.03, null, memeGain);  // hat
+      if (b % 2 === 0) toneAt(150, t0 + b * spb, 0.14, 'sine', 0.8, 45, memeGain);             // kick
+      else toneAt(1000, t0 + b * spb, 0.07, 'square', 0.10, 500, memeGain);                     // snare
+      if (song.hat) toneAt(6500, t0 + (b + 0.5) * spb, 0.03, 'square', 0.05, null, memeGain);   // hat
+    }
+    // 和弦垫（每4拍一个长和弦，铺底更丰满）
+    const chords = song.folk
+      ? [['C4', 'E4', 'G4'], ['F3', 'A3', 'C4'], ['A3', 'C4', 'E4'], ['G3', 'B3', 'D4']]
+      : [['A3', 'C4', 'E4'], ['F3', 'A3', 'C4'], ['A3', 'C4', 'E4'], ['G3', 'B3', 'D4']];
+    for (let bar = 0; bar < 4; bar++) {
+      for (const n of chords[bar % 4]) {
+        toneAt(nf(n), t0 + bar * 4 * spb, 4 * spb * 0.95, 'triangle', 0.08, null, memeGain);
+      }
     }
     if (song.folk) {
-      // 秧歌小钹点缀
-      for (const b of [3.5, 7.5, 11.5, 15.5]) toneAt(2500, t0 + b * spb, 0.08, 'square', 0.05, 1800, memeGain);
+      // 秧歌小钹点缀（唢呐味高音亮点）
+      for (const b of [3.5, 7.5, 11.5, 15.5]) toneAt(2800, t0 + b * spb, 0.09, 'sawtooth', 0.09, 1800, memeGain);
+    } else {
+      // 说唱"嘿！"点缀（电子短促音）
+      for (const b of [2, 6, 10, 14]) toneAt(200, t0 + b * spb, 0.05, 'square', 0.15, 120, memeGain);
     }
   }
 
@@ -190,6 +206,7 @@ window.SFX = (function () {
     const song = MEME_SONGS[name];
     if (!song) return;
     ensure();
+    if (ctx.state === 'suspended') ctx.resume();   // 双保险：确保音频上下文运行
     stopMemeSong();
     stopMusic();          // Boss 战期间切掉常规 BGM，玩梗歌独占
     meme.name = name;
@@ -219,5 +236,6 @@ window.SFX = (function () {
   function play(name) { ensure(); if (muted) return; if (fx[name]) fx[name](); }
 
   return { play, init, setMuted, isMuted, playMemeSong, stopMemeSong, pauseMemeSong, resumeMemeSong,
-    currentMeme: () => meme.name };
+    currentMeme: () => meme.name,
+    memeState: () => ({ name: meme.name, timerActive: !!meme.timer, ctxState: ctx ? ctx.state : 'none' }) };
 })();
