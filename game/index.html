@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>星际防线 · 飞机大战</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="game-wrap">
+  <canvas id="game" width="480" height="720"></canvas>
+
+  <!-- HUD 覆盖层（DOM 元素，hover 动画） -->
+  <div id="hud" class="hidden">
+    <div id="hud-top">
+      <div id="level-progress">
+        <span id="lp-label">第 1 关</span>
+        <div id="lp-bar"><div id="lp-fill"></div></div>
+      </div>
+      <div id="boss-bar-wrap" class="hidden">
+        <div id="boss-name">BOSS</div>
+        <div id="boss-bar"><div id="boss-fill"></div></div>
+      </div>
+    </div>
+    <div id="hud-mid">
+      <div id="stat-left">
+        <div id="lives"></div>
+        <div id="shield"></div>
+      </div>
+      <div id="stat-right">
+        <div id="score">0</div>
+        <div id="combo"></div>
+        <div id="energy-bar"><div id="energy-fill"></div></div>
+        <div id="bombs">💣 ×<span id="bomb-count">1</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 虚拟按键（触屏） -->
+  <div id="touch-controls">
+    <button id="btn-bomb" class="tbtn">💣</button>
+    <button id="btn-skill" class="tbtn">⚡</button>
+  </div>
+  <button id="mode-toggle" title="切换操作模式">🕹</button>
+  <div id="joystick"><div id="js-base"><div id="js-knob"></div></div></div>
+
+  <!-- 主界面覆盖层 -->
+  <div id="overlay">
+    <div id="menu" class="screen active">
+      <h1 class="title">星际<span>防线</span></h1>
+      <p class="subtitle">STAR DEFENSE · 三关玩梗弹幕战</p>
+      <div class="menu-btns">
+        <button class="mbtn primary" data-action="campaign">▶ 开始征程（三关 · 玩梗BOSS）</button>
+        <button class="mbtn" data-action="endless">∞ 无尽模式</button>
+        <button class="mbtn" data-action="upgrade">🛠 升级强化</button>
+        <button class="mbtn" data-action="rank">🏆 排行榜</button>
+        <button class="mbtn" data-action="help">❓ 操作说明</button>
+      </div>
+      <div class="menu-foot">
+        <button id="mute-btn" class="mbtn small">🔊 音效</button>
+        <span class="ver">v2.0 · 玩梗BOSS特别篇</span>
+      </div>
+    </div>
+
+    <div id="rank" class="screen">
+      <div class="panel">
+        <h2>🏆 排行榜</h2>
+        <div class="tabs">
+          <button class="tab active" data-mode="campaign">关卡模式</button>
+          <button class="tab" data-mode="endless">无尽模式</button>
+        </div>
+        <ol id="rank-list"></ol>
+        <button class="mbtn back" data-action="toMenu">← 返回</button>
+      </div>
+    </div>
+
+    <div id="help" class="screen">
+      <div class="panel">
+        <h2>❓ 操作说明</h2>
+        <ul class="help-list">
+          <li><b>征程：</b>三关制 · 第3关双BOSS复仇战</li>
+          <li><b>无尽：</b>每 6 波随机来袭一位玩梗 BOSS</li>
+          <li><b>移动：</b>方向键 / WASD，或鼠标 / 触屏拖拽</li>
+          <li><b>射击：</b>自动连发，无需按键</li>
+          <li><b>大招：</b>Z / ⚡键（能量满时释放全屏爆发）</li>
+          <li><b>炸弹：</b>X / 💣键（清屏弹幕，每关受限）</li>
+          <li><b>暂停：</b>P / Esc　<b>静音：</b>M</li>
+          <li><b>道具：</b>P火力 · S护盾 · B炸弹 · ♥生命 · 金币</li>
+          <li><b>连击：</b>连续击杀提升倍率，受击中段</li>
+          <li><b>过关：</b>击破BOSS后保留火力进入下一关</li>
+        </ul>
+        <button class="mbtn back" data-action="toMenu">← 返回</button>
+      </div>
+    </div>
+
+    <!-- 升级强化面板 -->
+    <div id="upgrade" class="screen">
+      <div class="panel upg-panel">
+        <h2>🛠 升级强化</h2>
+        <div class="upg-coins">金币：<b id="upg-coins">0</b> 💰</div>
+        <div id="upg-list"></div>
+        <button class="mbtn back" data-action="toMenu">← 返回</button>
+      </div>
+    </div>
+
+    <div id="pause" class="screen">
+      <div class="panel">
+        <h2>⏸ 已暂停</h2>
+        <button class="mbtn primary" data-action="resume">继续游戏</button>
+        <button class="mbtn" data-action="restart">重新开始</button>
+        <button class="mbtn" data-action="toMenu">返回主菜单</button>
+      </div>
+    </div>
+
+    <div id="settle" class="screen">
+      <div class="panel">
+        <h2 id="settle-title">🏁 结算</h2>
+        <div class="settle-stats">
+          <div class="ss"><span>得分</span><b id="s-score">0</b></div>
+          <div class="ss"><span>评级</span><b id="s-rank">S</b></div>
+          <div class="ss"><span>最大连击</span><b id="s-combo">0</b></div>
+          <div class="ss"><span>击杀</span><b id="s-kills">0</b></div>
+          <div class="ss"><span>用时</span><b id="s-time">0s</b></div>
+        </div>
+        <div id="new-record" class="hidden">🎉 新纪录！</div>
+        <div class="menu-btns">
+          <button class="mbtn primary" data-action="next">▶ 再来一局</button>
+          <button class="mbtn" data-action="toMenu">主菜单</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/input.js"></script>
+<script src="js/particles.js"></script>
+<script src="js/entities.js"></script>
+<script src="js/boss.js"></script>
+<script src="js/game.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

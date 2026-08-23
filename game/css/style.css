@@ -1,0 +1,116 @@
+/* ===== 星际防线 · 科技霓虹主题 ===== */
+:root{
+  --cyan:#00E5FF; --pink:#FF2E88; --purple:#7B5CFF; --yellow:#FFD54A;
+  --red:#FF3B3B; --text:#C8D6FF; --dim:#8AA0C0; --bg1:#05060f; --bg2:#0a0f2a;
+  --panel:rgba(10,16,40,.88);
+  --glow-cyan:0 0 12px rgba(0,229,255,.8),0 0 32px rgba(0,229,255,.35);
+  --glow-pink:0 0 12px rgba(255,46,136,.8),0 0 30px rgba(255,46,136,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:radial-gradient(circle at 50% 30%,#0a0f2a,#05060f 70%);
+  font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:var(--text);}
+body{display:flex;align-items:center;justify-content:center;user-select:none}
+
+#game-wrap{position:relative;width:min(100vw,calc(100vh*2/3));height:min(100vh,calc(100vw*3/2));
+  max-height:100vh;border:1px solid rgba(0,229,255,.35);box-shadow:0 0 40px rgba(0,229,255,.2),inset 0 0 60px rgba(0,229,255,.05);
+  border-radius:8px;overflow:hidden;background:#05060f}
+canvas#game{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:crosshair;touch-action:none}
+
+/* ---- HUD ---- */
+#hud{position:absolute;inset:0;pointer-events:none;z-index:5}
+#hud-top{position:absolute;top:8px;left:8px;right:8px}
+#level-progress{display:flex;align-items:center;gap:8px}
+#lp-label{font-size:11px;color:var(--cyan);text-shadow:var(--glow-cyan);letter-spacing:1px;white-space:nowrap}
+#lp-bar{flex:1;height:8px;background:rgba(255,255,255,.08);border:1px solid rgba(0,229,255,.4);border-radius:4px;overflow:hidden}
+#lp-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--cyan),var(--purple));box-shadow:var(--glow-cyan);transition:width .3s}
+#lp-fill.boss{background:linear-gradient(90deg,var(--pink),var(--red));box-shadow:var(--glow-pink)}
+#boss-bar-wrap{display:flex;flex-direction:column;gap:3px;margin-top:6px}
+#boss-name{font-size:11px;color:var(--pink);text-shadow:var(--glow-pink);text-align:center;letter-spacing:2px}
+#boss-bar{height:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,46,136,.6);border-radius:5px;overflow:hidden}
+#boss-fill{height:100%;width:100%;background:linear-gradient(90deg,var(--pink),var(--red));box-shadow:var(--glow-pink);transition:width .15s}
+
+#hud-mid{position:absolute;inset:0;padding:14px 12px 90px;display:flex;justify-content:space-between;align-items:flex-start}
+#stat-left{display:flex;flex-direction:column;gap:6px}
+#lives{font-size:16px;letter-spacing:3px;color:var(--pink);text-shadow:var(--glow-pink)}
+#shield{font-size:14px;color:var(--cyan);text-shadow:var(--glow-cyan)}
+#stat-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+#score{font-size:26px;font-weight:800;color:#fff;text-shadow:0 0 10px rgba(0,229,255,.6)}
+#combo{font-size:13px;color:var(--yellow);text-shadow:0 0 8px rgba(255,213,74,.6);min-height:16px}
+#energy-bar{width:110px;height:8px;background:rgba(255,255,255,.08);border:1px solid rgba(123,92,255,.6);border-radius:4px;overflow:hidden}
+#energy-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--purple),var(--cyan));box-shadow:0 0 8px rgba(123,92,255,.8)}
+#bombs{font-size:13px;color:var(--yellow);text-shadow:0 0 8px rgba(255,213,74,.5)}
+
+/* ---- 触屏虚拟键 ---- */
+#touch-controls{position:absolute;right:10px;bottom:16px;display:none;gap:10px;z-index:6}
+.tbtn{width:64px;height:64px;border-radius:50%;font-size:26px;border:1px solid rgba(0,229,255,.6);
+  background:rgba(10,16,40,.6);color:#fff;box-shadow:var(--glow-cyan);cursor:pointer;backdrop-filter:blur(2px)}
+.tbtn:active{background:rgba(0,229,255,.3)}
+@media (pointer:coarse){#touch-controls{display:flex}}
+
+/* ---- 覆盖层 ---- */
+#overlay{position:absolute;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 50% 40%,rgba(10,16,40,.55),rgba(5,6,15,.88))}
+.screen{display:none;flex-direction:column;align-items:center;gap:18px;width:100%;max-width:420px;padding:20px;text-align:center}
+.screen.active{display:flex}
+.title{font-size:56px;font-weight:900;letter-spacing:6px;color:#fff;
+  text-shadow:0 0 18px rgba(0,229,255,.9),0 0 55px rgba(255,46,136,.5)}
+.title span{color:var(--cyan);text-shadow:var(--glow-cyan)}
+.subtitle{font-size:13px;letter-spacing:4px;color:var(--dim);margin-top:-10px}
+.menu-btns{display:flex;flex-direction:column;gap:12px;width:100%;margin-top:8px}
+.mbtn{font-size:16px;padding:12px 20px;border-radius:30px;cursor:pointer;letter-spacing:1px;
+  color:var(--text);background:transparent;border:1px solid rgba(0,229,255,.5);transition:.2s;width:100%}
+.mbtn:hover{background:rgba(0,229,255,.15);box-shadow:var(--glow-cyan);transform:translateY(-2px)}
+.mbtn.primary{background:linear-gradient(90deg,rgba(0,229,255,.25),rgba(255,46,136,.25));border-color:var(--cyan);color:#fff;font-weight:700}
+.mbtn.small{width:auto;padding:8px 16px;font-size:13px}
+.mbtn.back{width:auto;padding:8px 20px;font-size:13px;margin-top:6px}
+.menu-foot{display:flex;align-items:center;gap:14px;margin-top:6px}
+.ver{font-size:11px;color:var(--dim);letter-spacing:1px}
+
+.panel{width:100%;max-width:380px;background:var(--panel);border:1px solid rgba(0,229,255,.4);border-radius:12px;
+  padding:22px;box-shadow:0 0 30px rgba(0,229,255,.15)}
+.panel h2{font-size:22px;margin-bottom:14px;color:#fff;text-shadow:var(--glow-cyan)}
+.tabs{display:flex;gap:8px;margin-bottom:12px}
+.tab{flex:1;padding:8px;border-radius:8px;cursor:pointer;color:var(--dim);background:transparent;border:1px solid rgba(255,255,255,.15);font-size:13px}
+.tab.active{color:#fff;border-color:var(--cyan);background:rgba(0,229,255,.15);box-shadow:var(--glow-cyan)}
+#rank-list{list-style:none;text-align:left;margin-bottom:12px}
+#rank-list li{display:flex;justify-content:space-between;padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.06);font-size:14px}
+#rank-list li:nth-child(1){color:var(--yellow);font-weight:700}
+#rank-list li:nth-child(2){color:var(--cyan);font-weight:700}
+#rank-list li:nth-child(3){color:var(--pink);font-weight:700}
+.help-list{list-style:none;text-align:left;font-size:14px;line-height:1.9;margin-bottom:10px}
+.help-list b{color:var(--cyan)}
+.settle-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.ss{background:rgba(255,255,255,.05);border-radius:8px;padding:10px;border:1px solid rgba(0,229,255,.15)}
+.ss span{display:block;font-size:11px;color:var(--dim)}
+.ss b{font-size:22px;color:#fff;text-shadow:var(--glow-cyan)}
+#new-record{color:var(--yellow);font-size:16px;text-shadow:0 0 12px rgba(255,213,74,.8);margin-bottom:10px;animation:pulse 1s infinite}
+.hidden{display:none!important}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ---- 升级强化面板 ---- */
+.upg-panel{max-height:92vh;overflow-y:auto}
+.upg-coins{font-size:16px;color:var(--yellow);text-shadow:0 0 10px rgba(255,213,74,.6);margin-bottom:12px;text-align:center}
+#upg-list{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.upg-item{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.05);border:1px solid rgba(0,229,255,.2);border-radius:10px;padding:10px 12px}
+.upg-icon{font-size:26px;width:36px;text-align:center}
+.upg-info{flex:1;text-align:left;min-width:0}
+.upg-info .upg-name{font-size:15px;color:#fff;font-weight:600}
+.upg-info .upg-desc{font-size:11px;color:var(--dim)}
+.upg-info .upg-bar{height:6px;background:rgba(255,255,255,.1);border-radius:3px;margin-top:5px;overflow:hidden}
+.upg-info .upg-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));box-shadow:var(--glow-cyan)}
+.upg-btn{min-width:86px;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;
+  background:linear-gradient(90deg,rgba(0,229,255,.25),rgba(255,46,136,.25));border:1px solid var(--cyan);color:#fff;transition:.2s}
+.upg-btn:hover{box-shadow:var(--glow-cyan);transform:translateY(-1px)}
+.upg-btn.max{border-color:var(--dim);color:var(--dim);background:transparent;cursor:default}
+.upg-btn.soon{border-color:var(--dim);color:var(--dim);background:rgba(255,255,255,.05);cursor:not-allowed}
+
+/* ---- 移动端操作模式切换 ---- */
+#mode-toggle{position:absolute;top:78px;right:10px;z-index:6;display:none;width:44px;height:44px;border-radius:50%;
+  border:1px solid rgba(0,229,255,.6);background:rgba(10,16,40,.6);color:#fff;font-size:20px;cursor:pointer;box-shadow:var(--glow-cyan)}
+@media (pointer:coarse){#mode-toggle{display:block}}
+/* 虚拟摇杆 */
+#joystick{position:absolute;z-index:6;display:none;pointer-events:none}
+#js-base{position:absolute;left:50%;top:50%;width:120px;height:120px;transform:translate(-50%,-50%);
+  border-radius:50%;border:2px solid rgba(0,229,255,.4);background:rgba(0,229,255,.06)}
+#js-knob{position:absolute;left:50%;top:50%;width:52px;height:52px;transform:translate(-50%,-50%);
+  border-radius:50%;border:2px solid rgba(0,229,255,.7);background:rgba(0,229,255,.2);box-shadow:var(--glow-cyan)}
