@@ -178,6 +178,24 @@ window.SFX = (function () {
   let netAudio = null;                                  // HTML5 Audio 实例
   let netState = { loading: false, ok: false, srcIdx: 0 };
   let netRetry = null;                                  // autoplay 重试监听器（停止时清理）
+  const preloaded = {};                                 // 预加载的本地音乐（首次交互即后台缓冲）
+
+  // 首次用户交互后立即后台预载本地音乐：Boss 出现时已完成缓冲，即点即播
+  function preloadMemeSongs() {
+    for (const name of Object.keys(NET_SONGS)) {
+      const url = NET_SONGS[name][0];
+      if (/^https?:/.test(url)) continue;               // 仅预载本地文件
+      if (preloaded[name]) continue;
+      const a = new Audio();
+      a.preload = 'auto';
+      a.loop = true;
+      a.volume = 0.75;
+      a.muted = muted;
+      a.src = url;
+      a.load();
+      preloaded[name] = a;
+    }
+  }
 
   // 逐个尝试网络歌曲链接
   function tryNetSong(name, idx) {
@@ -187,8 +205,16 @@ window.SFX = (function () {
       startSynthMeme(MEME_SONGS[name]);
       return;
     }
-    const a = new Audio();
-    a.src = urls[idx];
+    const url = urls[idx];
+    const isLocal = !/^https?:/.test(url);
+    let a;
+    if (isLocal && preloaded[name] && !preloaded[name].error) {
+      a = preloaded[name];                              // 复用预加载实例（大概率已缓冲完）
+      try { a.currentTime = 0; } catch (e) {}           // 每场 Boss 战从头播放
+    } else {
+      a = new Audio();
+      a.src = url;
+    }
     a.loop = true;
     a.volume = 0.75;
     a.muted = muted;
@@ -215,13 +241,19 @@ window.SFX = (function () {
     const onErr = () => {
       if (netAudio !== a || settled) return;
       settled = true;
-      try { a.pause(); a.removeAttribute('src'); a.load(); } catch (e) {}
+      if (!Object.values(preloaded).includes(a)) {      // 预加载实例保留待复用
+        try { a.pause(); a.removeAttribute('src'); a.load(); } catch (e) {}
+      }
       tryNetSong(name, idx + 1);                        // 尝试备选链接
     };
-    a.addEventListener('canplay', onOk, { once: true });
-    a.addEventListener('error', onErr, { once: true });
-    a.load();
-    setTimeout(() => { if (netAudio === a && !settled) onErr(); }, 10000);  // 加载超时保护
+    if (a.error) onErr();                               // 预载阶段就已失败
+    else if (a.readyState >= 3) onOk();                 // 已缓冲完成，立即播放
+    else {
+      a.addEventListener('canplay', onOk, { once: true });
+      a.addEventListener('error', onErr, { once: true });
+    }
+    // 仅外链设加载超时；本地同源文件必达，慢网络下耐心等待不回退
+    if (!isLocal) setTimeout(() => { if (netAudio === a && !settled) onErr(); }, 10000);
   }
 
   // 合成版玩梗 BGM（网络歌曲不可用时的兜底）
@@ -293,7 +325,11 @@ window.SFX = (function () {
       netRetry = null;
     }
     if (netAudio) {
-      try { netAudio.pause(); netAudio.removeAttribute('src'); netAudio.load(); } catch (e) {}
+      try { netAudio.pause(); } catch (e) {}
+      // 预加载实例保留缓冲数据供下次 Boss 战复用；外链实例销毁释放资源
+      if (!Object.values(preloaded).includes(netAudio)) {
+        try { netAudio.removeAttribute('src'); netAudio.load(); } catch (e) {}
+      }
       netAudio = null;
     }
     netState = { loading: false, ok: false, srcIdx: 0 };
@@ -315,8 +351,13 @@ window.SFX = (function () {
     playMemeSong(n);
   }
 
-  function init() { ensure(); startMusic(); }
-  function setMuted(m) { muted = m; if (master) master.gain.value = m ? 0 : 0.5; if (netAudio) netAudio.muted = m; }
+  function init() { ensure(); startMusic(); preloadMemeSongs(); }
+  function setMuted(m) {
+    muted = m;
+    if (master) master.gain.value = m ? 0 : 0.5;
+    if (netAudio) netAudio.muted = m;
+    for (const a of Object.values(preloaded)) a.muted = m;
+  }
   function isMuted() { return muted; }
   function play(name) { ensure(); if (muted) return; if (fx[name]) fx[name](); }
 
