@@ -523,11 +523,15 @@ window.Game = (function () {
       hud.bossWrap.classList.add('hidden');
     }
 
-    // 玩梗BGM正在播放指示
+    // 玩梗BGM正在播放指示（区分网络原声 / 电子演绎）
     const memeName = SFX.currentMeme();
     if (memeName) {
       hud.nowPlaying.classList.remove('hidden');
-      const txt = '♪ 正在播放：《' + MEME_LABEL[memeName] + '》';
+      const st = SFX.memeState();
+      let txt;
+      if (st.net && st.net.loading) txt = '♪ 正在缓冲：《' + MEME_LABEL[memeName] + '》…';
+      else if (st.net && st.net.ok) txt = '♪ 正在播放：《' + MEME_LABEL[memeName] + '》';
+      else txt = '♪ 正在播放：《' + MEME_LABEL[memeName] + '》· 电子演绎';
       if (hud.nowPlaying.textContent !== txt) hud.nowPlaying.textContent = txt;
     } else {
       hud.nowPlaying.classList.add('hidden');

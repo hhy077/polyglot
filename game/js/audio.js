@@ -162,6 +162,76 @@ window.SFX = (function () {
   const MEME_SONGS = { jitn: SONG_JITN, dbd: SONG_DBD };
   let meme = { timer: null, name: null, pausedName: null };
 
+  // ================= 网络玩梗歌曲（真实人声原曲） =================
+  // 网易云音乐外链（302 重定向至 CDN，无 Referer 防盗链，浏览器 <audio> 可直接播放，已验证）
+  // 播放失败自动尝试备选链接，全部失败回退到上方合成 BGM，保证 Boss 战始终有音乐
+  const NET_SONGS = {
+    jitn: [
+      'https://music.163.com/song/media/outer/url?id=1948109333.mp3',  // 鸡你太美（完整版）
+      'https://music.163.com/song/media/outer/url?id=1919482168.mp3'   // 备选：DJ 演绎版
+    ],
+    dbd: [
+      'https://music.163.com/song/media/outer/url?id=3316869901.mp3',  // 大东北我的家乡（东北最强音版）
+      'https://music.163.com/song/media/outer/url?id=3324390734.mp3'   // 备选：雨姐「带派」版
+    ]
+  };
+  let netAudio = null;                                  // HTML5 Audio 实例
+  let netState = { loading: false, ok: false, srcIdx: 0 };
+  let netRetry = null;                                  // autoplay 重试监听器（停止时清理）
+
+  // 逐个尝试网络歌曲链接
+  function tryNetSong(name, idx) {
+    const urls = NET_SONGS[name];
+    if (idx >= urls.length) {                           // 全部失败 → 回退合成 BGM
+      netState = { loading: false, ok: false, srcIdx: -1 };
+      startSynthMeme(MEME_SONGS[name]);
+      return;
+    }
+    const a = new Audio();
+    a.src = urls[idx];
+    a.loop = true;
+    a.volume = 0.75;
+    a.muted = muted;
+    netAudio = a;
+    netState = { loading: true, ok: false, srcIdx: idx };
+    let settled = false;
+    const onOk = () => {
+      if (netAudio !== a || settled) return;
+      settled = true;
+      netState.loading = false; netState.ok = true;
+      a.play().catch(() => {
+        // autoplay 被浏览器策略拒绝：注册一次性交互监听，用户下次按键/点击立即恢复播放
+        const retry = () => {
+          window.removeEventListener('pointerdown', retry);
+          window.removeEventListener('keydown', retry);
+          netRetry = null;
+          if (netAudio === a) a.play().catch(() => {});
+        };
+        window.addEventListener('pointerdown', retry);
+        window.addEventListener('keydown', retry);
+        netRetry = retry;
+      });
+    };
+    const onErr = () => {
+      if (netAudio !== a || settled) return;
+      settled = true;
+      try { a.pause(); a.removeAttribute('src'); a.load(); } catch (e) {}
+      tryNetSong(name, idx + 1);                        // 尝试备选链接
+    };
+    a.addEventListener('canplay', onOk, { once: true });
+    a.addEventListener('error', onErr, { once: true });
+    a.load();
+    setTimeout(() => { if (netAudio === a && !settled) onErr(); }, 10000);  // 加载超时保护
+  }
+
+  // 合成版玩梗 BGM（网络歌曲不可用时的兜底）
+  function startSynthMeme(song) {
+    if (!song) return;
+    scheduleMemeLoop(song);
+    const loopMs = song.beats * (60 / song.bpm) * 1000;
+    meme.timer = setInterval(() => scheduleMemeLoop(song), loopMs);
+  }
+
   function scheduleMemeLoop(song) {
     if (!ctx || muted) return;
     const spb = 60 / song.bpm;               // 秒/拍
@@ -210,32 +280,49 @@ window.SFX = (function () {
     stopMemeSong();
     stopMusic();          // Boss 战期间切掉常规 BGM，玩梗歌独占
     meme.name = name;
-    scheduleMemeLoop(song);
-    const loopMs = song.beats * (60 / song.bpm) * 1000;
-    meme.timer = setInterval(() => scheduleMemeLoop(song), loopMs);
+    // 优先播放网络真实歌曲；无网络源或加载失败时自动回退合成 BGM
+    if (NET_SONGS[name]) tryNetSong(name, 0);
+    else startSynthMeme(song);
   }
 
   function stopMemeSong() {
     if (meme.timer) { clearInterval(meme.timer); meme.timer = null; }
+    if (netRetry) {                       // 清理 autoplay 重试监听
+      window.removeEventListener('pointerdown', netRetry);
+      window.removeEventListener('keydown', netRetry);
+      netRetry = null;
+    }
+    if (netAudio) {
+      try { netAudio.pause(); netAudio.removeAttribute('src'); netAudio.load(); } catch (e) {}
+      netAudio = null;
+    }
+    netState = { loading: false, ok: false, srcIdx: 0 };
     meme.name = null; meme.pausedName = null;
     if (ctx) startMusic();   // 恢复常规 BGM
   }
 
   function pauseMemeSong() {
+    if (netAudio) { netAudio.pause(); meme.pausedName = meme.name; meme.name = null; return; }
     if (!meme.timer) return;
     clearInterval(meme.timer); meme.timer = null;
     meme.pausedName = meme.name; meme.name = null;
   }
   function resumeMemeSong() {
-    if (meme.pausedName) { const n = meme.pausedName; meme.pausedName = null; playMemeSong(n); }
+    if (!meme.pausedName) return;
+    const n = meme.pausedName; meme.pausedName = null;
+    // 网络歌曲：从暂停处继续播放
+    if (netAudio && netAudio.readyState >= 2) { meme.name = n; netAudio.play().catch(() => {}); return; }
+    playMemeSong(n);
   }
 
   function init() { ensure(); startMusic(); }
-  function setMuted(m) { muted = m; if (master) master.gain.value = m ? 0 : 0.5; }
+  function setMuted(m) { muted = m; if (master) master.gain.value = m ? 0 : 0.5; if (netAudio) netAudio.muted = m; }
   function isMuted() { return muted; }
   function play(name) { ensure(); if (muted) return; if (fx[name]) fx[name](); }
 
   return { play, init, setMuted, isMuted, playMemeSong, stopMemeSong, pauseMemeSong, resumeMemeSong,
     currentMeme: () => meme.name,
-    memeState: () => ({ name: meme.name, timerActive: !!meme.timer, ctxState: ctx ? ctx.state : 'none' }) };
+    memeState: () => ({ name: meme.name, timerActive: !!meme.timer, ctxState: ctx ? ctx.state : 'none',
+      net: netAudio ? { ok: netState.ok, loading: netState.loading, idx: netState.srcIdx,
+        paused: netAudio.paused, readyState: netAudio.readyState, t: Math.round(netAudio.currentTime) } : null }) };
 })();
