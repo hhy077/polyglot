@@ -167,8 +167,8 @@ window.SFX = (function () {
   // 本地缺失时回退网易云外链，再失败回退合成 BGM，保证 Boss 战始终有音乐
   const NET_SONGS = {
     jitn: [
-      'assets/music/jitn.mp3',                                     // 鸡你太美（完整版·本地）
-      'https://music.163.com/song/media/outer/url?id=1948109333.mp3'   // 备选：网易云外链
+      'assets/music/jitn.mp3',                                     // 只因你太美（ROE Bootleg完整版·本地）
+      'https://music.163.com/song/media/outer/url?id=1361144868.mp3'  // 备选：网易云外链
     ],
     dbd: [
       'assets/music/dbd.mp3',                                      // 大东北我的家乡（东北最强音版·本地）
@@ -177,8 +177,33 @@ window.SFX = (function () {
   };
   let netAudio = null;                                  // HTML5 Audio 实例
   let netState = { loading: false, ok: false, srcIdx: 0 };
-  let netRetry = null;                                  // autoplay 重试监听器（停止时清理）
+  let netRetryCleanup = null;                           // autoplay 重试清理函数（停止时调用）
   const preloaded = {};                                 // 预加载的本地音乐（首次交互即后台缓冲）
+
+  // 确保 Audio 真实出声：play() 被浏览器 autoplay 策略拒绝时，
+  // 监听一切用户交互（含鼠标移动/滚轮/触摸）并定时轮询重试，直到真正响起为止
+  function ensurePlaying(a) {
+    a.play().catch(() => {
+      let lastTry = 0;
+      let timer = null;
+      const EVENTS = ['pointerdown', 'pointermove', 'keydown', 'touchstart', 'touchmove', 'wheel', 'click'];
+      const cleanup = () => {
+        EVENTS.forEach(e => window.removeEventListener(e, retry));
+        if (timer) { clearInterval(timer); timer = null; }
+        if (netRetryCleanup === cleanup) netRetryCleanup = null;
+      };
+      const retry = () => {
+        if (netAudio !== a || !a.paused) { cleanup(); return; }   // 已换曲或已在播
+        const now = Date.now();
+        if (now - lastTry < 1000) return;                          // 节流：至多每秒试一次
+        lastTry = now;
+        a.play().then(cleanup, () => {});                          // 成功才清理，失败等下次
+      };
+      EVENTS.forEach(e => window.addEventListener(e, retry, { passive: true }));
+      timer = setInterval(retry, 2000);                            // 无交互时兜底轮询
+      netRetryCleanup = cleanup;
+    });
+  }
 
   // 首次用户交互后立即后台预载本地音乐：Boss 出现时已完成缓冲，即点即播
   function preloadMemeSongs() {
@@ -225,18 +250,7 @@ window.SFX = (function () {
       if (netAudio !== a || settled) return;
       settled = true;
       netState.loading = false; netState.ok = true;
-      a.play().catch(() => {
-        // autoplay 被浏览器策略拒绝：注册一次性交互监听，用户下次按键/点击立即恢复播放
-        const retry = () => {
-          window.removeEventListener('pointerdown', retry);
-          window.removeEventListener('keydown', retry);
-          netRetry = null;
-          if (netAudio === a) a.play().catch(() => {});
-        };
-        window.addEventListener('pointerdown', retry);
-        window.addEventListener('keydown', retry);
-        netRetry = retry;
-      });
+      ensurePlaying(a);       // play被拒时自动监听交互+轮询重试，杜绝Boss战静音
     };
     const onErr = () => {
       if (netAudio !== a || settled) return;
@@ -319,10 +333,9 @@ window.SFX = (function () {
 
   function stopMemeSong() {
     if (meme.timer) { clearInterval(meme.timer); meme.timer = null; }
-    if (netRetry) {                       // 清理 autoplay 重试监听
-      window.removeEventListener('pointerdown', netRetry);
-      window.removeEventListener('keydown', netRetry);
-      netRetry = null;
+    if (netRetryCleanup) {                     // 清理 autoplay 重试监听与轮询
+      netRetryCleanup();
+      netRetryCleanup = null;
     }
     if (netAudio) {
       try { netAudio.pause(); } catch (e) {}
@@ -346,8 +359,8 @@ window.SFX = (function () {
   function resumeMemeSong() {
     if (!meme.pausedName) return;
     const n = meme.pausedName; meme.pausedName = null;
-    // 网络歌曲：从暂停处继续播放
-    if (netAudio && netAudio.readyState >= 2) { meme.name = n; netAudio.play().catch(() => {}); return; }
+    // 网络歌曲：从暂停处继续播放（play失败同样有交互重试保障）
+    if (netAudio && netAudio.readyState >= 2) { meme.name = n; ensurePlaying(netAudio); return; }
     playMemeSong(n);
   }
 
