@@ -178,6 +178,7 @@ window.SFX = (function () {
   let netAudio = null;                                  // HTML5 Audio 实例
   let netState = { loading: false, ok: false, srcIdx: 0 };
   let netRetryCleanup = null;                           // autoplay 重试清理函数（停止时调用）
+  let netLocalTimeoutClear = null;                      // 本地文件超时清理函数（停止时调用）
   const preloaded = {};                                 // 预加载的本地音乐（首次交互即后台缓冲）
 
   // 确保 Audio 真实出声：play() 被浏览器 autoplay 策略拒绝时，
@@ -206,6 +207,9 @@ window.SFX = (function () {
   }
 
   // 首次用户交互后立即后台预载本地音乐：Boss 出现时已完成缓冲，即点即播
+  // 关键：借当前用户手势（SFX.init 由首次点击/按键触发）对每个 Audio 元素
+  // 执行"静音播放→立即暂停"，激活该元素——此后 Boss 出现时的 play() 不再受
+  // 浏览器自动播放策略拦截（否则纯鼠标移动的玩家永远无法解锁播放）
   function preloadMemeSongs() {
     for (const name of Object.keys(NET_SONGS)) {
       const url = NET_SONGS[name][0];
@@ -219,6 +223,17 @@ window.SFX = (function () {
       a.src = url;
       a.load();
       preloaded[name] = a;
+      // 手势内解锁：静音播放一次再归零暂停（用户无感知）
+      a.muted = true;
+      const restore = () => { a.muted = muted; };
+      a.play().then(() => {
+        // 防竞态：若此刻 Boss 战已接管该实例（或已在播放），不得暂停打断
+        if (netAudio !== a && a.paused === false) {
+          a.pause();
+          try { a.currentTime = 0; } catch (e) {}
+        }
+        restore();
+      }).catch(restore);
     }
   }
 
@@ -246,28 +261,37 @@ window.SFX = (function () {
     netAudio = a;
     netState = { loading: true, ok: false, srcIdx: idx };
     let settled = false;
+    let localTimeout = null;
+    const clearLocalTimeout = () => { if (localTimeout) { clearTimeout(localTimeout); localTimeout = null; } };
+    netLocalTimeoutClear = clearLocalTimeout;           // stopMemeSong 时清理
     const onOk = () => {
       if (netAudio !== a || settled) return;
       settled = true;
+      clearLocalTimeout();
+      if (meme.timer) { clearInterval(meme.timer); meme.timer = null; }   // 停掉超时过渡的合成版
       netState.loading = false; netState.ok = true;
       ensurePlaying(a);       // play被拒时自动监听交互+轮询重试，杜绝Boss战静音
     };
     const onErr = () => {
       if (netAudio !== a || settled) return;
       settled = true;
+      clearLocalTimeout();
       if (!Object.values(preloaded).includes(a)) {      // 预加载实例保留待复用
         try { a.pause(); a.removeAttribute('src'); a.load(); } catch (e) {}
       }
       tryNetSong(name, idx + 1);                        // 尝试备选链接
     };
+    // 用属性赋值而非 addEventListener：复用预载实例时自动覆盖旧处理器，杜绝重复触发
+    a.oncanplay = onOk;
+    a.onerror = onErr;
     if (a.error) onErr();                               // 预载阶段就已失败
     else if (a.readyState >= 3) onOk();                 // 已缓冲完成，立即播放
-    else {
-      a.addEventListener('canplay', onOk, { once: true });
-      a.addEventListener('error', onErr, { once: true });
-    }
-    // 仅外链设加载超时；本地同源文件必达，慢网络下耐心等待不回退
+    // 外链设10秒加载超时；本地同源文件必达，但缓冲过慢（>18s）时先播合成版过渡，
+    // 原曲缓冲完成后自动无缝切换，保证 Boss 战任何网络环境下都有音乐
     if (!isLocal) setTimeout(() => { if (netAudio === a && !settled) onErr(); }, 10000);
+    else localTimeout = setTimeout(() => {
+      if (netAudio === a && !settled) startSynthMeme(MEME_SONGS[name]);
+    }, 18000);
   }
 
   // 合成版玩梗 BGM（网络歌曲不可用时的兜底）
@@ -337,7 +361,13 @@ window.SFX = (function () {
       netRetryCleanup();
       netRetryCleanup = null;
     }
+    if (netLocalTimeoutClear) {                // 清理本地文件超时定时器
+      netLocalTimeoutClear();
+      netLocalTimeoutClear = null;
+    }
     if (netAudio) {
+      netAudio.oncanplay = null;               // 摘除播放状态回调，防止停止后误触发
+      netAudio.onerror = null;
       try { netAudio.pause(); } catch (e) {}
       // 预加载实例保留缓冲数据供下次 Boss 战复用；外链实例销毁释放资源
       if (!Object.values(preloaded).includes(netAudio)) {
