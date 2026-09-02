@@ -371,254 +371,335 @@
         opacity: 1 !important;
         transform: none !important;
       }
+      /* 禁用动画后，确保入场界面内容仍可见 */
+      .intro-card,
+      .intro-name,
+      .intro-tagline,
+      .intro-hint,
+      .intro-btn,
+      .intro-footer,
+      .intro-avatar-wrap {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      .intro-halo,
+      .intro-star,
+      .intro-glow {
+        opacity: 1 !important;
+        transform: none !important;
+      }
     }
 
     /* Intro / landing screen */
+    /* =========================================================
+       Intro / landing screen
+       深色高级感 · 暖色点缀 · 毛玻璃卡片 · 点击头像 5 次解锁
+       ========================================================= */
     #intro-screen {
-      background: linear-gradient(160deg, #f0f9ff 0%, #e0f2fe 50%, #dbeafe 100%);
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow: hidden;
+      background: #0b0a0e;
+      color: #f0ede8;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      transition: opacity 0.7s ease;
     }
-    html.dark #intro-screen {
-      background: radial-gradient(ellipse at center, #0f172a 0%, #030712 100%);
-    }
-    .intro-backdrop {
-      background: radial-gradient(circle at 50% 50%, rgba(6,182,212,0.14) 0%, transparent 60%);
-      animation: introPulse 4s ease-in-out infinite;
-    }
-    html.dark .intro-backdrop {
-      background: radial-gradient(circle at 50% 50%, rgba(34,211,238,0.12) 0%, transparent 60%);
-    }
-    @keyframes introPulse {
-      0%, 100% { transform: scale(1); opacity: 0.8; }
-      50% { transform: scale(1.1); opacity: 1; }
-    }
-    .intro-avatar {
-      background: linear-gradient(135deg, #06b6d4, #6366f1);
-      box-shadow: 0 0 40px rgba(6,182,212,0.35);
-      animation: introFloat 3s ease-in-out infinite;
-      transition: transform 0.3s ease;
-    }
-    html.dark .intro-avatar {
-      background: linear-gradient(135deg, #22d3ee, #818cf8);
-      box-shadow: 0 0 50px rgba(34,211,238,0.35);
-    }
-    @keyframes introFloat {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-    .intro-avatar-ring {
-      border: 2px solid rgba(255,255,255,0.45);
-      animation: avatarRing 2s ease-out infinite;
-    }
-    @keyframes avatarRing {
-      0% { transform: scale(1); opacity: 1; }
-      100% { transform: scale(1.45); opacity: 0; }
-    }
-    .intro-title {
-      color: #0f172a;
-      opacity: 0;
-      animation: introFadeIn 0.6s ease-out 0.2s forwards;
-    }
-    html.dark .intro-title {
-      background: linear-gradient(135deg, #22d3ee 0%, #818cf8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .intro-cursor {
-      display: inline-block;
-      width: 3px;
-      margin-left: 2px;
-      animation: blink 1s step-end infinite;
-      color: inherit;
-    }
-    @keyframes blink { 50% { opacity: 0; } }
-    .intro-subtitle {
-      color: #475569;
-      opacity: 0;
-      animation: introFadeIn 0.6s ease-out 0.4s forwards;
-      transition: opacity 0.3s ease;
-    }
-    html.dark .intro-subtitle {
-      color: #94a3b8;
-    }
-    @keyframes introFadeIn {
-      to { opacity: 1; }
-    }
-    .intro-btn {
-      background: linear-gradient(135deg, #06b6d4, #6366f1);
-      color: white;
-      box-shadow: 0 0 30px rgba(6,182,212,0.35), inset 0 0 20px rgba(255,255,255,0.2);
-      opacity: 0;
-      animation: introPop 0.6s ease-out 0.8s forwards, btnGlow 2.5s ease-in-out infinite;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .intro-btn:hover {
-      transform: scale(1.08);
-      box-shadow: 0 0 45px rgba(6,182,212,0.55), inset 0 0 25px rgba(255,255,255,0.3);
-    }
-    .intro-btn:active {
-      transform: scale(0.95);
-    }
-    html.dark .intro-btn {
-      background: linear-gradient(135deg, #22d3ee, #818cf8);
-      box-shadow: 0 0 35px rgba(34,211,238,0.35), inset 0 0 20px rgba(255,255,255,0.15);
-    }
-    html.dark .intro-btn:hover {
-      box-shadow: 0 0 55px rgba(34,211,238,0.55), inset 0 0 25px rgba(255,255,255,0.25);
-    }
-    @keyframes introPop {
-      0% { opacity: 0; transform: scale(0.5); }
-      70% { transform: scale(1.1); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-    @keyframes btnGlow {
-      0%, 100% { filter: brightness(1); }
-      50% { filter: brightness(1.15); }
-    }
-    .intro-ring {
-      border: 2px solid rgba(255,255,255,0.55);
-      animation: btnRing 2s ease-out infinite;
-    }
-    @keyframes btnRing {
-      0% { transform: scale(1); opacity: 1; }
-      100% { transform: scale(1.6); opacity: 0; }
-    }
-    .intro-hint {
-      color: #475569;
-      opacity: 0;
-      animation: introFadeIn 0.6s ease-out 1s forwards;
-    }
-    html.dark .intro-hint {
-      color: #94a3b8;
-    }
-    .intro-particle {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(6,182,212,0.35);
-      animation: introParticle 6s linear infinite;
-    }
-    html.dark .intro-particle {
-      background: rgba(34,211,238,0.3);
-    }
-    @keyframes introParticle {
-      0% { transform: translateY(110vh) scale(0); opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 0.6; }
-      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
-    }
-    .intro-burst-particle {
+
+    /* 暖色流动光晕（低透明度，缓慢移动） */
+    .intro-glow {
       position: absolute;
       border-radius: 50%;
       pointer-events: none;
-      background: #22d3ee;
-      box-shadow: 0 0 8px rgba(34,211,238,0.8);
+      filter: blur(60px);
+      will-change: transform, opacity;
     }
-    @keyframes burstFly {
-      0% { transform: translate(0,0) scale(1); opacity: 1; }
-      100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+    .intro-glow-a {
+      width: 420px;
+      height: 420px;
+      left: 50%;
+      top: 38%;
+      margin-left: -210px;
+      margin-top: -210px;
+      background: radial-gradient(circle, rgba(212,184,154,0.16) 0%, transparent 70%);
+      animation: glowDriftA 14s ease-in-out infinite;
     }
+    .intro-glow-b {
+      width: 520px;
+      height: 520px;
+      left: 50%;
+      top: 58%;
+      margin-left: -260px;
+      margin-top: -260px;
+      background: radial-gradient(circle, rgba(200,180,160,0.10) 0%, transparent 70%);
+      animation: glowDriftB 18s ease-in-out infinite;
+    }
+    @keyframes glowDriftA {
+      0%, 100% { transform: translate(0,0) scale(1); opacity: 0.7; }
+      50% { transform: translate(30px,-24px) scale(1.12); opacity: 1; }
+    }
+    @keyframes glowDriftB {
+      0%, 100% { transform: translate(0,0) scale(1); opacity: 0.6; }
+      50% { transform: translate(-36px,28px) scale(1.08); opacity: 0.95; }
+    }
+
+    /* 毛玻璃卡片 */
+    .intro-card {
+      position: relative;
+      width: 100%;
+      max-width: 460px;
+      padding: 44px 36px 32px;
+      border-radius: 48px;
+      background: rgba(255,255,255,0.04);
+      -webkit-backdrop-filter: blur(24px);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(212,184,154,0.14);
+      box-shadow: 0 24px 60px -18px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
+      text-align: center;
+      overflow: hidden;
+      animation: introRise 0.8s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .intro-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 48px;
+      background: radial-gradient(circle at 50% -10%, rgba(212,184,154,0.10), transparent 55%);
+      pointer-events: none;
+    }
+
+    /* 头像区：圆形头像 + 脉动光晕 + 点击波纹 */
+    .intro-avatar-wrap {
+      position: relative;
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 20px;
+    }
+    .intro-avatar {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      font-weight: 700;
+      color: #f0ede8;
+      background: radial-gradient(circle at 30% 25%, #3a342c, #17141a 70%);
+      border: 1px solid rgba(212,184,154,0.35);
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08);
+      transition: transform 0.1s ease;
+      outline: none;
+    }
+    .intro-avatar:focus-visible {
+      box-shadow: 0 0 0 3px rgba(212,184,154,0.5), 0 8px 24px rgba(0,0,0,0.45);
+    }
+    .intro-avatar:active { transform: scale(0.94); }
+    .intro-avatar-text {
+      font-family: "Songti SC", "STSong", "SimSun", serif;
+    }
+    /* 脉动光晕（径向渐变环） */
+    .intro-halo {
+      position: absolute;
+      inset: -16px;
+      border-radius: 50%;
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(212,184,154,0.35) 0%, rgba(212,184,154,0.10) 55%, transparent 70%);
+      animation: haloPulse 3s ease-in-out infinite;
+    }
+    @keyframes haloPulse {
+      0%, 100% { transform: scale(1); opacity: 0.85; }
+      50% { transform: scale(1.12); opacity: 1; }
+    }
+    /* 解锁后光晕增强（节奏变化） */
+    #intro-screen.unlocked .intro-halo {
+      animation: haloPulseStrong 1.6s ease-in-out infinite;
+    }
+    @keyframes haloPulseStrong {
+      0%, 100% { transform: scale(1); opacity: 0.95; }
+      50% { transform: scale(1.24); opacity: 1; }
+    }
+    /* 点击波纹扩散 */
+    .intro-ripple {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      pointer-events: none;
+      border: 1.5px solid rgba(212,184,154,0.55);
+      opacity: 0;
+    }
+    #intro-screen.pulse .intro-ripple {
+      animation: rippleOut 0.6s ease-out forwards;
+    }
+    @keyframes rippleOut {
+      0% { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(1.9); opacity: 0; }
+    }
+
+    /* 进度指示：5 个圆点 */
+    .intro-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 0 0 20px;
+    }
+    .intro-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(200,180,160,0.22);
+      transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .intro-dot.lit {
+      background: #d4b89a;
+      box-shadow: 0 0 10px rgba(212,184,154,0.7);
+      transform: scale(1.15);
+    }
+
+    /* 姓名：亮白 → 暖金 渐变 */
+    .intro-name {
+      margin: 0 0 10px;
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      background: linear-gradient(120deg, #ffffff 0%, #f0ede8 45%, #d4b89a 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: introRise 0.8s cubic-bezier(0.22,1,0.36,1) 0.12s both;
+    }
+
+    /* 标语：✦ 小幅上下浮动 */
+    .intro-tagline {
+      margin: 0 0 8px;
+      font-size: 15px;
+      letter-spacing: 0.06em;
+      color: rgba(240,237,232,0.72);
+      animation: introRise 0.8s cubic-bezier(0.22,1,0.36,1) 0.22s both;
+    }
+    .intro-star {
+      display: inline-block;
+      color: #d4b89a;
+      animation: starFloat 2.2s ease-in-out infinite;
+    }
+    @keyframes starFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    /* 提示文字 */
+    .intro-hint {
+      min-height: 20px;
+      margin: 0 0 22px;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      color: rgba(200,180,160,0.55);
+      transition: color 0.3s ease;
+      animation: introRise 0.8s cubic-bezier(0.22,1,0.36,1) 0.32s both;
+    }
+    .intro-hint.flash { animation: hintFlash 0.4s ease; }
+    @keyframes hintFlash {
+      0% { opacity: 0.4; }
+      50% { opacity: 1; }
+      100% { opacity: 0.9; }
+    }
+    #intro-screen.unlocked .intro-hint { color: rgba(212,184,154,0.85); }
+
+    /* 进入按钮：禁用（灰）→ 解锁（暖色边框 + 悬浮上浮 + 箭头右移） */
+    .intro-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-width: 200px;
+      padding: 14px 30px;
+      border-radius: 999px;
+      font-size: 15px;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      font-family: inherit;
+      color: rgba(240,237,232,0.4);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(200,180,160,0.18);
+      cursor: not-allowed;
+      animation: introRise 0.8s cubic-bezier(0.22,1,0.36,1) 0.42s both;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
+      outline: none;
+    }
+    /* 未解锁点击的“拒绝”反馈 */
+    .intro-btn.reject { animation: btnReject 0.35s ease; }
+    @keyframes btnReject {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px) scale(0.98); }
+      50% { transform: translateX(5px) scale(0.98); }
+      75% { transform: translateX(-3px); }
+    }
+    #intro-screen.unlocked .intro-btn {
+      color: #f0ede8;
+      border-color: rgba(212,184,154,0.55);
+      background: rgba(212,184,154,0.08);
+      cursor: pointer;
+    }
+    #intro-screen.unlocked .intro-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px -8px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,184,154,0.3);
+    }
+    #intro-screen.unlocked .intro-btn:active { transform: translateY(-1px) scale(0.98); }
+    .intro-btn-arrow {
+      display: inline-block;
+      transition: transform 0.25s ease;
+    }
+    #intro-screen.unlocked .intro-btn:hover .intro-btn-arrow { transform: translateX(6px); }
+
+    /* 底部域名 + 键盘提示 */
+    .intro-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 28px;
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      color: rgba(200,180,160,0.42);
+      animation: introRise 0.8s cubic-bezier(0.22,1,0.36,1) 0.52s both;
+    }
+    .intro-domain { color: rgba(212,184,154,0.7); }
+
+    /* 入场淡入上移动画 */
+    @keyframes introRise {
+      0% { opacity: 0; transform: translateY(24px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 退出 */
     #intro-screen.hidden-out {
       opacity: 0;
       pointer-events: none;
     }
-    /* Manual entry progress */
-    .manual-progress-container {
-      max-width: 240px;
-      margin-left: auto;
-      margin-right: auto;
+
+    /* 响应式 */
+    @media (max-width: 480px) {
+      .intro-card { padding: 36px 24px 28px; border-radius: 36px; }
+      .intro-name { font-size: 32px; }
+      .intro-avatar-wrap { width: 84px; height: 84px; }
+      .intro-avatar { font-size: 36px; }
+      .intro-btn { min-width: 170px; padding: 12px 24px; }
     }
-    .manual-progress-track {
-      height: 8px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.08);
-      overflow: hidden;
-      position: relative;
-    }
-    html.dark .manual-progress-track {
-      background: rgba(255, 255, 255, 0.08);
-    }
-    .manual-progress-fill {
-      height: 100%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #06b6d4, #6366f1);
-      box-shadow: 0 0 12px rgba(6, 182, 212, 0.45);
-      transition: width 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-      position: relative;
-    }
-    html.dark .manual-progress-fill {
-      background: linear-gradient(90deg, #22d3ee, #818cf8);
-      box-shadow: 0 0 14px rgba(34, 211, 238, 0.45);
-    }
-    .manual-progress-fill::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
-      animation: progressShine 1.6s ease-in-out infinite;
-    }
-    @keyframes progressShine {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-    .manual-progress-hint {
-      margin-top: 0.5rem;
-      font-size: 0.75rem;
-      color: #475569;
-      text-align: center;
-      transition: color 0.2s ease;
-    }
-    html.dark .manual-progress-hint {
-      color: #94a3b8;
-    }
-    .manual-progress-hint.complete {
-      color: #0891b2;
-      font-weight: 600;
-    }
-    html.dark .manual-progress-hint.complete {
-      color: #22d3ee;
-    }
-    /* Avatar click feedback */
-    .intro-avatar {
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      transition: transform 0.08s ease;
-    }
-    .intro-avatar:active {
-      transform: scale(0.92);
-    }
-    .intro-avatar-ripple {
-      border: 2px solid rgba(255,255,255,0.7);
-      opacity: 0;
-    }
-    .intro-avatar.clicked .intro-avatar-ripple {
-      animation: avatarClickRipple 0.45s ease-out forwards;
-    }
-    @keyframes avatarClickRipple {
-      0% { transform: scale(1); opacity: 0.8; }
-      100% { transform: scale(1.7); opacity: 0; }
-    }
-    /* Enhanced burst particles */
-    .intro-burst-particle {
-      position: absolute;
-      border-radius: 50%;
-      pointer-events: none;
-      background: #22d3ee;
-      box-shadow: 0 0 10px rgba(34,211,238,0.9), 0 0 20px rgba(34,211,238,0.4);
-    }
-    .intro-burst-particle.large {
-      box-shadow: 0 0 14px rgba(34,211,238,1), 0 0 30px rgba(34,211,238,0.5);
-    }
-    .intro-burst-shockwave {
-      position: absolute;
-      border-radius: 50%;
-      pointer-events: none;
-      border: 2px solid rgba(34, 211, 238, 0.7);
-      transform: translate(-50%, -50%) scale(0);
-      animation: shockwave 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    }
-    @keyframes shockwave {
-      0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
-      100% { transform: translate(-50%, -50%) scale(4); opacity: 0; }
+    @media (max-width: 380px) {
+      .intro-card { padding: 28px 18px 24px; border-radius: 30px; }
+      .intro-name { font-size: 27px; letter-spacing: 0.12em; }
+      .intro-avatar-wrap { width: 74px; height: 74px; }
+      .intro-avatar { font-size: 32px; }
+      .intro-tagline { font-size: 13px; }
+      .intro-footer { font-size: 11px; }
     }
 
     /* Certificate cards clickable */
@@ -715,37 +796,51 @@
 </head>
 <body class="antialiased overflow-x-hidden transition-colors duration-700">
   <!-- Intro / landing screen -->
-  <div id="intro-screen" class="fixed inset-0 z-[100] flex items-center justify-center transition-opacity duration-700">
-    <div class="intro-backdrop absolute inset-0 pointer-events-none"></div>
-    <div class="intro-particles absolute inset-0 pointer-events-none overflow-hidden" id="intro-particles"></div>
-    <div class="intro-burst absolute inset-0 pointer-events-none overflow-hidden" id="intro-burst"></div>
-    <div class="relative z-10 text-center px-6 max-w-lg select-none">
-      <div id="intro-avatar" class="intro-avatar mb-8 mx-auto w-28 h-28 rounded-full flex items-center justify-center text-5xl font-bold text-white shadow-2xl relative cursor-pointer select-none" data-i18n-attr="title" data-i18n="avatarTitle" title="连续点击 5 次解锁">
-        <span id="intro-avatar-text">霍</span>
-        <span class="intro-avatar-ring absolute inset-0 rounded-full pointer-events-none"></span>
-        <span class="intro-avatar-ripple absolute inset-0 rounded-full pointer-events-none"></span>
-      </div>
-      <h1 class="intro-title text-5xl md:text-7xl font-extrabold tracking-tight mb-4 min-h-[1.2em]">
-        <span id="intro-typed"></span><span class="intro-cursor">|</span>
-      </h1>
-      <p class="intro-subtitle text-lg md:text-xl mb-6 min-h-[1.6em]" id="intro-subtitle" data-i18n="introSubtitle">
-        个人简历 · Portfolio
-      </p>
+  <div id="intro-screen">
+    <!-- 暖色流动光晕背景 -->
+    <div class="intro-glow intro-glow-a" aria-hidden="true"></div>
+    <div class="intro-glow intro-glow-b" aria-hidden="true"></div>
 
-      <!-- Manual entry progress -->
-      <div id="manual-progress" class="manual-progress-container mb-8 opacity-0" style="animation: introFadeIn 0.6s ease-out 0.6s forwards;">
-        <div class="manual-progress-track">
-          <div class="manual-progress-fill" id="manual-progress-fill" style="width: 0%"></div>
+    <!-- 毛玻璃卡片 -->
+    <div class="intro-card">
+      <!-- 头像区：圆形头像 + 脉动光晕 + 点击波纹 -->
+      <div class="intro-avatar-wrap">
+        <span class="intro-halo" id="intro-halo" aria-hidden="true"></span>
+        <div class="intro-avatar" id="intro-avatar" role="button" tabindex="0" aria-label="连续点击头像解锁进入">
+          <span class="intro-avatar-text" id="intro-avatar-text">霍</span>
         </div>
-        <p class="manual-progress-hint" id="manual-progress-hint" data-i18n="manualHint">连续点击头像 5 次手动解锁</p>
+        <span class="intro-ripple" id="intro-ripple" aria-hidden="true"></span>
       </div>
 
-      <button id="enter-btn" class="intro-btn group relative inline-flex items-center gap-3 px-10 py-5 rounded-full text-lg font-bold mx-auto cursor-pointer">
-        <span data-i18n="enterBtn">进入简历</span>
-        <i data-lucide="arrow-right" class="w-6 h-6 text-white transition-transform duration-300 group-hover:translate-x-1"></i>
-        <span class="intro-ring absolute inset-0 rounded-full pointer-events-none"></span>
+      <!-- 进度指示：5 个圆点 -->
+      <div class="intro-dots" id="intro-dots" aria-hidden="true">
+        <span class="intro-dot"></span>
+        <span class="intro-dot"></span>
+        <span class="intro-dot"></span>
+        <span class="intro-dot"></span>
+        <span class="intro-dot"></span>
+      </div>
+
+      <!-- 姓名 -->
+      <h1 class="intro-name" id="intro-name">霍华翔</h1>
+
+      <!-- 标语 -->
+      <p class="intro-tagline" id="intro-tagline">一名热爱技术的开发者 <span class="intro-star" aria-hidden="true">✦</span></p>
+
+      <!-- 提示文字 -->
+      <p class="intro-hint" id="intro-hint" data-i18n="introHintLocked">连续点击头像 · 解锁进入</p>
+
+      <!-- 进入按钮 -->
+      <button class="intro-btn" id="intro-btn" type="button" disabled>
+        <span class="intro-btn-label" id="intro-btn-label">进入简历</span>
+        <span class="intro-btn-arrow" aria-hidden="true">→</span>
       </button>
-      <p class="intro-hint mt-8 text-sm" data-i18n="introHint">点击按钮或按 Enter 键进入</p>
+
+      <!-- 底部域名 + 键盘提示 -->
+      <div class="intro-footer">
+        <span class="intro-domain">hhy077.github.io</span>
+        <span class="intro-key" data-i18n="introKeyHint">按 Enter 键进入</span>
+      </div>
     </div>
   </div>
 
@@ -1093,11 +1188,12 @@
         night: "月间",
         fullName: "霍华翔 - 个人简历",
         introTitle: "个人简历 · Portfolio",
-        introSubtitle: "点击头像 5 次或下方按钮进入",
-        avatarTitle: "连续点击 5 次解锁",
+        introName: "霍华翔",
+        introTagline: "一名热爱技术的开发者",
+        introHintLocked: "连续点击头像 · 解锁进入",
+        introHintUnlocked: "✦ 已解锁 · 可以进入了",
         enterBtn: "进入简历",
-        introHint: "点击按钮或按 Enter 键进入",
-        manualHint: "连续点击头像 5 次手动解锁",
+        introKeyHint: "按 Enter 键进入",
         manualHintRemaining: n => `再点击头像 ${n} 次即可解锁`,
         manualHintComplete: "已解锁！正在粒子化进入...",
         navHighlights: "亮点",
@@ -1132,11 +1228,12 @@
         night: "Moon",
         fullName: "Huahuoxiang - Resume",
         introTitle: "Portfolio",
-        introSubtitle: "Click avatar 5 times or the button below",
-        avatarTitle: "Click 5 times to unlock",
-        enterBtn: "Enter Portfolio",
-        introHint: "Click button or press Enter",
-        manualHint: "Click avatar 5 times to unlock manually",
+        introName: "Huahuoxiang",
+        introTagline: "A developer who loves technology",
+        introHintLocked: "Tap the avatar · Unlock to enter",
+        introHintUnlocked: "✦ Unlocked · You can enter now",
+        enterBtn: "Enter Resume",
+        introKeyHint: "Press Enter to enter",
         manualHintRemaining: n => `Click avatar ${n} more time${n === 1 ? '' : 's'} to unlock`,
         manualHintComplete: "Unlocked! Particle transitioning...",
         navHighlights: "Highlights",
@@ -1798,173 +1895,127 @@
 
     function initIntro() {
       const introScreen = $('intro-screen');
-      const enterBtn = $('enter-btn');
       const avatar = $('intro-avatar');
       const avatarText = $('intro-avatar-text');
-      const progressFill = $('manual-progress-fill');
-      const progressHint = $('manual-progress-hint');
-      const particles = $('intro-particles');
-      const burst = $('intro-burst');
-      const typed = $('intro-typed');
-      const subtitle = $('intro-subtitle');
+      const nameEl = $('intro-name');
+      const taglineEl = $('intro-tagline');
+      const hintEl = $('intro-hint');
+      const btn = $('intro-btn');
+      const btnLabel = $('intro-btn-label');
+      const dots = Array.from(document.querySelectorAll('#intro-dots .intro-dot'));
       if (!introScreen) return;
 
+      // 多语言文案初始化
+      const I = resume[lang];
       if (avatarText) avatarText.textContent = lang === 'zh' ? '霍' : 'H';
+      if (nameEl) nameEl.textContent = I.introName || '霍华翔';
+      if (taglineEl) taglineEl.innerHTML = (I.introTagline || '一名热爱技术的开发者') + ' <span class="intro-star" aria-hidden="true">✦</span>';
+      if (btnLabel) btnLabel.textContent = I.enterBtn || '进入简历';
 
-      // Floating ambient particles
-      if (particles) {
-        const count = window.matchMedia('(pointer: coarse)').matches ? 18 : 32;
-        for (let i = 0; i < count; i++) {
-          const p = document.createElement('div');
-          p.className = 'intro-particle';
-          const size = 2 + Math.random() * 5;
-          p.style.width = size + 'px';
-          p.style.height = size + 'px';
-          p.style.left = Math.random() * 100 + '%';
-          p.style.top = Math.random() * 100 + '%';
-          p.style.animationDuration = (4 + Math.random() * 6) + 's';
-          p.style.animationDelay = (Math.random() * 5) + 's';
-          particles.appendChild(p);
-        }
+      // 解锁状态
+      const TOTAL = 5;                 // 需要的点击次数
+      let clicks = 0;                  // 当前点击次数
+      let unlocked = false;            // 是否已解锁
+
+      // 波纹扩散：从头像中心向外扩散一圈
+      function ripple() {
+        introScreen.classList.remove('pulse');
+        void introScreen.offsetWidth;
+        introScreen.classList.add('pulse');
       }
 
-      // Typing effect for name
-      const name = lang === 'zh' ? '霍华翔' : 'Huahuoxiang';
-      let nameIdx = 0;
-      function typeName() {
-        if (typed && nameIdx <= name.length) {
-          typed.textContent = name.slice(0, nameIdx);
-          nameIdx++;
-          if (nameIdx <= name.length) {
-            setTimeout(typeName, 140 + Math.random() * 80);
+      // 提示文字短暂闪烁
+      function flashHint() {
+        if (!hintEl) return;
+        hintEl.classList.remove('flash');
+        void hintEl.offsetWidth;
+        hintEl.classList.add('flash');
+      }
+
+      // 点亮对应进度圆点
+      function lightDot(index) {
+        if (dots[index]) dots[index].classList.add('lit');
+      }
+
+      // 更新提示文字（锁定 / 已解锁）
+      function updateHint() {
+        if (!hintEl) return;
+        hintEl.textContent = unlocked
+          ? (I.introHintUnlocked || '✦ 已解锁 · 可以进入了')
+          : (I.introHintLocked || '连续点击头像 · 解锁进入');
+      }
+
+      // 解锁：点亮全部圆点 + 光晕增强 + 按钮启用
+      function unlock() {
+        if (unlocked) return;
+        unlocked = true;
+        dots.forEach(d => d.classList.add('lit'));
+        introScreen.classList.add('unlocked');
+        if (btn) btn.disabled = false;
+        updateHint();
+        flashHint();
+      }
+
+      // 头像点击 / Enter 累加次数
+      function addClick() {
+        if (unlocked || introScreen.classList.contains('hidden-out')) return;
+        clicks++;
+        ripple();                    // 波纹扩散
+        lightDot(clicks - 1);        // 点亮对应圆点
+        flashHint();                 // 提示闪烁
+        if (clicks >= TOTAL) unlock();
+      }
+
+      // 头像：鼠标/触屏点击
+      if (avatar) {
+        avatar.addEventListener('click', (e) => {
+          e.stopPropagation();
+          addClick();
+        });
+        // 键盘操作：tabindex + Enter/Space
+        avatar.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            addClick();
           }
-        }
+        });
       }
-      setTimeout(typeName, 500);
 
-      // Cycling fun subtitles
-      const subtitles = lang === 'zh' ? [
-        '个人简历 · Portfolio',
-        '一名热爱技术的开发者 ✨',
-        '正在加载精彩经历...',
-        '连续点击头像 5 次，手动解锁 →',
-        '或点击下方按钮快速进入'
-      ] : [
-        'Portfolio',
-        'A developer who loves tech ✨',
-        'Loading amazing experiences...',
-        'Click avatar 5 times to unlock →',
-        'Or press the button below'
-      ];
-      let subIdx = 0;
-      const subInterval = setInterval(() => {
-        if (!subtitle || introScreen.classList.contains('hidden-out')) {
-          clearInterval(subInterval);
+      // 进入网站
+      function enterSite() {
+        if (!unlocked) {
+          // 未解锁：拒绝反馈（微缩放）
+          if (btn) {
+            btn.classList.remove('reject');
+            void btn.offsetWidth;
+            btn.classList.add('reject');
+          }
+          flashHint();
           return;
         }
-        subtitle.style.opacity = 0;
-        setTimeout(() => {
-          subIdx = (subIdx + 1) % subtitles.length;
-          subtitle.textContent = subtitles[subIdx];
-          subtitle.style.opacity = 1;
-        }, 300);
-      }, 2600);
-
-      // Manual entry: click avatar 5 times
-      const MANUAL_CLICKS = 5;
-      let manualClicks = 0;
-      function updateManualProgress() {
-        const pct = (manualClicks / MANUAL_CLICKS) * 100;
-        if (progressFill) progressFill.style.width = pct + '%';
-        if (progressHint) {
-          if (manualClicks >= MANUAL_CLICKS) {
-            progressHint.textContent = resume[lang].manualHintComplete;
-            progressHint.classList.add('complete');
-          } else {
-            const remaining = MANUAL_CLICKS - manualClicks;
-            const tmpl = resume[lang].manualHintRemaining;
-            progressHint.textContent = typeof tmpl === 'function' ? tmpl(remaining) : tmpl.replace('{n}', remaining);
-          }
-        }
-      }
-      function triggerAvatarClickEffect() {
-        if (!avatar) return;
-        avatar.classList.remove('clicked');
-        void avatar.offsetWidth;
-        avatar.classList.add('clicked');
-        setTimeout(() => avatar.classList.remove('clicked'), 450);
-      }
-      function onAvatarClick(e) {
-        e.stopPropagation();
         if (introScreen.classList.contains('hidden-out')) return;
-        if (manualClicks >= MANUAL_CLICKS) return;
-        manualClicks++;
-        updateManualProgress();
-        triggerAvatarClickEffect();
-        if (manualClicks >= MANUAL_CLICKS) {
-          setTimeout(() => enterSite(true), 220);
-        }
-      }
-      if (avatar) {
-        avatar.addEventListener('click', onAvatarClick);
-      }
-
-      function createBurst(sourceEl, intensity = 1) {
-        if (!burst) return;
-        const rect = sourceEl ? sourceEl.getBoundingClientRect() : { left: window.innerWidth / 2 - 50, top: window.innerHeight / 2 - 50, width: 100, height: 100 };
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const colors = ['#22d3ee', '#818cf8', '#ffffff', '#06b6d4', '#c084fc'];
-        const count = Math.floor(40 * intensity) + (intensity > 1 ? 70 : 0);
-
-        // Shockwave ring
-        const wave = document.createElement('div');
-        wave.className = 'intro-burst-shockwave';
-        wave.style.left = cx + 'px';
-        wave.style.top = cy + 'px';
-        const waveSize = sourceEl ? Math.max(rect.width, rect.height) * 0.5 : 50;
-        wave.style.width = waveSize + 'px';
-        wave.style.height = waveSize + 'px';
-        burst.appendChild(wave);
-        setTimeout(() => wave.remove(), 800);
-
-        for (let i = 0; i < count; i++) {
-          const p = document.createElement('div');
-          p.className = 'intro-burst-particle';
-          const isLarge = Math.random() < 0.25;
-          if (isLarge) p.classList.add('large');
-          const size = isLarge ? 8 + Math.random() * 9 : 3 + Math.random() * 7;
-          p.style.width = size + 'px';
-          p.style.height = size + 'px';
-          p.style.left = cx + 'px';
-          p.style.top = cy + 'px';
-          p.style.background = colors[Math.floor(Math.random() * colors.length)];
-          const angle = (i / count) * Math.PI * 2 + Math.random() * 0.6;
-          const dist = (80 + Math.random() * 170) * intensity;
-          p.style.setProperty('--tx', (Math.cos(angle) * dist) + 'px');
-          p.style.setProperty('--ty', (Math.sin(angle) * dist) + 'px');
-          p.style.animation = `burstFly ${0.7 + Math.random() * 0.5}s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards`;
-          burst.appendChild(p);
-          setTimeout(() => p.remove(), 1300);
-        }
-      }
-
-      function enterSite(isManual = false) {
-        if (introScreen.classList.contains('hidden-out')) return;
-        createBurst(isManual ? avatar : enterBtn, isManual ? 2.4 : 1);
         introScreen.classList.add('hidden-out');
         setTimeout(() => {
           introScreen.style.display = 'none';
+          // TODO: 正式跳转时放开下面这行，替换为实际地址
+          // window.location.href = 'https://hhy077.github.io/polyglot/resume.html';
+          alert('已解锁！即将进入简历 ✦');
         }, 700);
       }
 
-      if (enterBtn) {
-        enterBtn.addEventListener('click', () => enterSite(false));
+      // 按钮点击：解锁后进入，未解锁拒绝
+      if (btn) {
+        btn.addEventListener('click', enterSite);
       }
 
+      // 全局 Enter：未解锁 → 累加；已解锁 → 进入
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && !introScreen.classList.contains('hidden-out')) {
-          enterSite(false);
+          if (unlocked) {
+            enterSite();
+          } else {
+            addClick();
+          }
         }
       });
     }
