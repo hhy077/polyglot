@@ -389,35 +389,36 @@
         transform: none !important;
       }
       /* 保持入场点击波纹可见（即便系统开启“减弱动态效果”，否则 opacity:0 残留导致电脑端看不到） */
+      /* 注意：必须加 !important，否则会被上方 * { animation: none !important } 压过 */
       #intro-screen.pulse .intro-ripple {
-        animation: rippleOut 0.6s ease-out forwards;
+        animation: rippleOut 0.6s ease-out forwards !important;
       }
       /* 保持月间模式流星效果可见（同理：.meteor 初始 opacity:0，靠动画显示） */
       html.dark .meteor.active {
-        animation: meteorFade 2.6s linear forwards;
+        animation: meteorFade 2.6s linear forwards !important;
       }
       html.dark .meteor.small.active {
-        animation: meteorFade 1.9s linear forwards;
+        animation: meteorFade 1.9s linear forwards !important;
       }
       html.dark .meteor.active .meteor-tail,
       html.dark .meteor.active .meteor-core {
-        animation: drawTail 2.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        animation: drawTail 2.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
       }
       html.dark .meteor.small.active .meteor-tail,
       html.dark .meteor.small.active .meteor-core {
-        animation: drawTail 1.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        animation: drawTail 1.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
       }
       html.dark .meteor.active .meteor-head {
-        animation: headShow 2.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        animation: headShow 2.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
       }
       html.dark .meteor.small.active .meteor-head {
-        animation: headShow 1.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        animation: headShow 1.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
       }
       html.dark .meteor.active .meteor-head-aura {
-        animation: auraPulse 2.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards, auraGlow 1.6s ease-in-out infinite;
+        animation: auraPulse 2.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards, auraGlow 1.6s ease-in-out infinite !important;
       }
       html.dark .meteor.small.active .meteor-head-aura {
-        animation: auraPulse 1.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards, auraGlow 1.6s ease-in-out infinite;
+        animation: auraPulse 1.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards, auraGlow 1.6s ease-in-out infinite !important;
       }
     }
 
