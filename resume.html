@@ -617,7 +617,7 @@
       cursor: pointer;
       transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
-    /* Horizontal certificate scroller */
+    /* Horizontal certificate scroller (mobile) */
     .cert-scroll {
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
@@ -627,6 +627,19 @@
     }
     .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
+    /* Desktop: vertical certificate list with slim scrollbar */
+    @media (min-width: 768px) {
+      .cert-scroll { scroll-snap-type: none; }
+      .cert-scroll .cert-card { scroll-snap-align: none; }
+      #cert-list { scrollbar-width: thin; scrollbar-color: rgba(6,182,212,0.4) transparent; }
+      #cert-list::-webkit-scrollbar { display: block; width: 6px; }
+      #cert-list::-webkit-scrollbar-track { background: transparent; }
+      #cert-list::-webkit-scrollbar-thumb {
+        background: rgba(6, 182, 212, 0.4);
+        border-radius: 3px;
+      }
+      #cert-list::-webkit-scrollbar-thumb:hover { background: rgba(6, 182, 212, 0.6); }
+    }
     .cert-card:hover {
       transform: translateY(-3px);
       border-color: rgba(6, 182, 212, 0.4);
@@ -1002,7 +1015,7 @@
           <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white" data-i18n="education">教育与证书</h2>
         </div>
         <div id="edu-card" class="reveal glass rounded-2xl p-6 md:p-8 mb-5"></div>
-        <div id="cert-list" class="flex gap-4 overflow-x-auto pb-3 cert-scroll no-scrollbar"></div>
+        <div id="cert-list" class="flex gap-4 overflow-x-auto pb-3 cert-scroll no-scrollbar md:flex-col md:overflow-x-hidden md:overflow-y-auto md:max-h-[460px] md:gap-3 md:pr-2 md:overscroll-contain"></div>
         <div class="reveal mt-6 text-center">
           <button id="view-all-certs" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold glass hover:border-cyan-400/50 transition-all duration-300 cursor-pointer">
             <span data-i18n="viewAllCerts">查看全部证书</span>
@@ -1529,11 +1542,11 @@
         const name = lang === 'en' && c.nameEn ? c.nameEn : c.name;
         const dateStr = lang === 'en' && c.dateEn ? c.dateEn : c.date;
         return `
-        <div class="cert-card reveal-scale stagger-${Math.min(i+1, 5)} glass rounded-2xl p-4 flex flex-col items-center gap-3 w-44 shrink-0 cursor-pointer" title="${escape(certTitle)}" data-cert-index="${i}">
-          <div class="w-full h-28 rounded-xl overflow-hidden bg-white border border-slate-200 dark:border-white/10 flex items-center justify-center shrink-0">
+        <div class="cert-card reveal-scale stagger-${Math.min(i+1, 5)} glass rounded-2xl p-4 flex flex-col items-center gap-3 w-44 shrink-0 cursor-pointer md:w-full md:flex-row md:items-center md:gap-4 md:shrink" title="${escape(certTitle)}" data-cert-index="${i}">
+          <div class="w-full h-28 rounded-xl overflow-hidden bg-white border border-slate-200 dark:border-white/10 flex items-center justify-center shrink-0 md:w-32 md:h-20 md:shrink-0">
             <img src="${c.img}" alt="${escape(name)}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" loading="lazy" data-cert-thumb="${i}">
           </div>
-          <div class="min-w-0 w-full text-center">
+          <div class="min-w-0 w-full text-center md:text-left md:flex-1">
             <div class="text-sm font-bold text-slate-800 dark:text-slate-200 truncate">${escape(name)}</div>
             <div class="text-xs text-slate-400 dark:text-slate-500">${escape(dateStr)}</div>
           </div>
