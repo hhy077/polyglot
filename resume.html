@@ -362,6 +362,15 @@
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; transition: none !important; }
+      /* 禁用动画后，确保 hero 区内容仍可见（否则 opacity:0 残留导致顶部空白） */
+      .hero-avatar,
+      .hero-title,
+      .hero-sub,
+      .hero-text,
+      .hero-actions {
+        opacity: 1 !important;
+        transform: none !important;
+      }
     }
 
     /* Intro / landing screen */
